@@ -3,14 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>EggplantTinyPNG — UI</title>
+<title>EggplantTinyPNG — Theme</title>
 <style>
   :root {
     --fill: #eef8fc;
     --accent: #50c7fc;
+    --accent-soft: rgba(80, 199, 252, 0.55);
     --card-border: rgba(80, 199, 252, 0.14);
     --title: #1f2428;
     --sub: #5a6a76;
+    --tb-title: #5a7a88;
     --savings: #248a3d;
     --scroller-track: #e2f0f6;
     --scroller-knob: #82a8ba;
@@ -19,24 +21,18 @@
   body {
     margin: 0;
     min-height: 100vh;
-    display: grid;
-    place-items: center;
-    padding: 40px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    padding: 36px 24px 48px;
     font: 13px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
     color: #1a1a1a;
     background:
       radial-gradient(1100px 520px at 50% -8%, #9eb0c0 0%, transparent 55%),
       linear-gradient(180deg, #6d7d8c, #4a5866);
   }
-  .caption {
-    position: fixed;
-    left: 24px;
-    bottom: 20px;
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 12px;
-    max-width: 420px;
-  }
-  .caption strong { color: #fff; font-weight: 600; }
 
   .win {
     width: 520px;
@@ -48,6 +44,7 @@
     display: flex;
     flex-direction: column;
     user-select: none;
+    flex: 0 0 auto;
   }
   .tb {
     height: 44px;
@@ -70,7 +67,7 @@
     transform: translateX(-50%);
     font-weight: 560;
     font-size: 12px;
-    color: #5a7a88;
+    color: var(--tb-title);
     white-space: nowrap;
   }
 
@@ -86,9 +83,9 @@
     flex-direction: column;
     gap: 12px;
     overflow: hidden;
+    background: var(--fill);
   }
 
-  /* Legacy mist-cyan scroller (always on when overflowing) */
   .scroller {
     background: var(--scroller-track);
     position: relative;
@@ -112,7 +109,7 @@
     padding: 0 16px;
     border-radius: 12px;
     background: #fff;
-    border: 1.5px dashed rgba(80, 199, 252, 0.55);
+    border: 1.5px dashed var(--accent-soft);
   }
   .glyph {
     width: 32px;
@@ -147,6 +144,7 @@
     margin-bottom: 8px;
     font-size: 13px;
     font-weight: 500;
+    color: var(--title);
   }
   .prog .pct {
     font-variant-numeric: tabular-nums;
@@ -167,11 +165,7 @@
     background: var(--accent);
   }
 
-  .queue {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+  .queue { display: flex; flex-direction: column; gap: 6px; }
   .row {
     display: flex;
     align-items: center;
@@ -246,10 +240,169 @@
     color: var(--sub);
     cursor: default;
   }
+
+  .panel {
+    width: min(360px, 92vw);
+    padding: 16px 16px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+    flex: 0 0 auto;
+  }
+  .panel h1 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+  .panel .lead {
+    margin: 0 0 14px;
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 16px;
+  }
+  .presets button {
+    appearance: none;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(0, 0, 0, 0.18);
+    color: rgba(255, 255, 255, 0.9);
+    border-radius: 999px;
+    padding: 5px 11px;
+    font: 600 11px/1.2 -apple-system, sans-serif;
+    cursor: pointer;
+  }
+  .presets button:hover,
+  .presets button.active {
+    background: rgba(80, 199, 252, 0.28);
+    border-color: rgba(80, 199, 252, 0.55);
+  }
+  .field { margin-bottom: 14px; }
+  .field-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .field-head label {
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .hex {
+    font: 600 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: #fff;
+  }
+  .row-ctrl {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 10px;
+    align-items: center;
+  }
+  input[type="color"] {
+    width: 36px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 7px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .slider-row {
+    display: grid;
+    grid-template-columns: 28px 1fr 36px;
+    gap: 8px;
+    align-items: center;
+  }
+  .slider-row span {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .slider-row .val {
+    text-align: right;
+    font: 600 11px/1 ui-monospace, Menlo, monospace;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  input[type="range"] {
+    width: 100%;
+    accent-color: #50c7fc;
+    cursor: pointer;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.22);
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.82);
+  }
+  .chip i {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+  .out {
+    margin: 12px 0 0;
+    padding: 10px 11px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.28);
+    font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: rgba(255, 255, 255, 0.88);
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 160px;
+    overflow: auto;
+  }
+  .panel-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .panel-actions button {
+    appearance: none;
+    border: 0;
+    border-radius: 8px;
+    padding: 7px 12px;
+    font: 600 12px/1 -apple-system, sans-serif;
+    cursor: pointer;
+  }
+  .panel-actions .primary {
+    background: #50c7fc;
+    color: #083044;
+  }
+  .panel-actions .ghost {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+  .toast {
+    margin-top: 8px;
+    font-size: 11px;
+    color: rgba(180, 255, 210, 0.95);
+    min-height: 1.2em;
+  }
 </style>
 </head>
 <body>
-  <div class="win" aria-label="EggplantTinyPNG current UI">
+  <div class="win" aria-label="EggplantTinyPNG theme preview">
     <div class="tb">
       <div class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></div>
       <div class="title">EggplantTinyPNG</div>
@@ -280,7 +433,7 @@
               <div class="sub">→ hero-banner-tiny-20260815-214602.png · 1.2 MB→380 KB</div>
             </div>
             <span class="pill">−68%</span>
-            <div class="reveal" title="在访达中显示"></div>
+            <div class="reveal"></div>
           </div>
           <div class="row">
             <div class="thumb b"></div>
@@ -315,14 +468,381 @@
           <button type="button">清除列表</button>
         </div>
       </div>
-      <div class="scroller" title="scroll track #e2f0f6 · knob #82a8ba" aria-hidden="true"></div>
+      <div class="scroller" aria-hidden="true"></div>
     </div>
   </div>
 
-  <p class="caption">
-    <strong>Shipping UI</strong> — L1 Mist Cyan · 紧凑投放区 · 白卡片队列 ·
-    常显滚动条（轨道 <code>#e2f0f6</code> / 滑块 <code>#82a8ba</code>）·
-    自动导出在菜单栏
-  </p>
+  <aside class="panel" aria-label="整体主题调色">
+    <h1>整体主题</h1>
+    <p class="lead">改窗体底色 + 主题色；卡片描边、投放虚线、进度条、滚动条都会跟着走。</p>
+
+    <div class="presets" id="presets">
+      <button type="button" data-preset="mist">Mist Cyan</button>
+      <button type="button" data-preset="slate">灰青</button>
+      <button type="button" data-preset="sky">Soft Sky</button>
+      <button type="button" data-preset="seafoam">Seafoam</button>
+      <button type="button" data-preset="porcelain">Porcelain</button>
+    </div>
+
+    <div class="field">
+      <div class="field-head">
+        <label for="fillColor">窗体底色</label>
+        <span class="hex" id="fillHex">#eef8fc</span>
+      </div>
+      <div class="row-ctrl">
+        <input id="fillColor" type="color" value="#eef8fc" />
+        <div class="slider-row">
+          <span>浅</span>
+          <input id="fillDepth" type="range" min="0" max="100" value="12" aria-label="底色深度" />
+          <span class="val" id="fillDepthVal">12</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-head">
+        <label for="accentColor">主题色</label>
+        <span class="hex" id="accentHex">#50c7fc</span>
+      </div>
+      <div class="row-ctrl">
+        <input id="accentColor" type="color" value="#50c7fc" />
+        <div class="slider-row">
+          <span>淡</span>
+          <input id="accentStrength" type="range" min="20" max="100" value="100" aria-label="主题色强度" />
+          <span class="val" id="accentStrengthVal">100</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-head">
+        <label for="chromeTint">整体偏色</label>
+        <span class="hex" id="tintLabel">跟随主题</span>
+      </div>
+      <div class="slider-row">
+        <span>少</span>
+        <input id="chromeTint" type="range" min="0" max="100" value="35" aria-label="主题渗入底色" />
+        <span class="val" id="chromeTintVal">35</span>
+      </div>
+    </div>
+
+    <div class="chips" id="chips"></div>
+    <pre class="out" id="swiftOut"></pre>
+    <div class="panel-actions">
+      <button type="button" class="primary" id="copyBtn">复制 Swift 主题</button>
+      <button type="button" class="ghost" id="resetBtn">重置 Mist</button>
+    </div>
+    <div class="toast" id="toast" aria-live="polite"></div>
+  </aside>
+
+<script>
+(() => {
+  const WHITE = [255, 255, 255];
+  const PAPER = [248, 250, 252];
+
+  const PRESETS = {
+    mist: {
+      name: "Mist Cyan",
+      fill: "#eef8fc",
+      accent: "#50c7fc",
+      fillDepth: 12,
+      accentStrength: 100,
+      chromeTint: 35,
+    },
+    slate: {
+      name: "灰青",
+      fill: "#eef2f5",
+      accent: "#6a8fa3",
+      fillDepth: 22,
+      accentStrength: 88,
+      chromeTint: 28,
+    },
+    sky: {
+      name: "Soft Sky",
+      fill: "#f2f6fb",
+      accent: "#5b9fd4",
+      fillDepth: 14,
+      accentStrength: 92,
+      chromeTint: 30,
+    },
+    seafoam: {
+      name: "Seafoam",
+      fill: "#eef8f4",
+      accent: "#3db89a",
+      fillDepth: 14,
+      accentStrength: 90,
+      chromeTint: 32,
+    },
+    porcelain: {
+      name: "Porcelain",
+      fill: "#f5f7fa",
+      accent: "#6b8cae",
+      fillDepth: 10,
+      accentStrength: 85,
+      chromeTint: 22,
+    },
+  };
+
+  const KEY = "eggplant-tinypng-theme-v1";
+  const root = document.documentElement;
+
+  const els = {
+    fillColor: document.getElementById("fillColor"),
+    accentColor: document.getElementById("accentColor"),
+    fillDepth: document.getElementById("fillDepth"),
+    accentStrength: document.getElementById("accentStrength"),
+    chromeTint: document.getElementById("chromeTint"),
+    fillHex: document.getElementById("fillHex"),
+    accentHex: document.getElementById("accentHex"),
+    fillDepthVal: document.getElementById("fillDepthVal"),
+    accentStrengthVal: document.getElementById("accentStrengthVal"),
+    chromeTintVal: document.getElementById("chromeTintVal"),
+    tintLabel: document.getElementById("tintLabel"),
+    chips: document.getElementById("chips"),
+    swiftOut: document.getElementById("swiftOut"),
+    toast: document.getElementById("toast"),
+    presets: document.getElementById("presets"),
+  };
+
+  let fillPick = PRESETS.mist.fill;
+  let accentPick = PRESETS.mist.accent;
+  let syncing = false;
+
+  const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+
+  function hexToRgb(hex) {
+    const h = hex.replace("#", "");
+    const n = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+    return [parseInt(n.slice(0, 2), 16), parseInt(n.slice(2, 4), 16), parseInt(n.slice(4, 6), 16)];
+  }
+
+  function rgbToHex([r, g, b]) {
+    return "#" + [r, g, b].map((v) => clamp(Math.round(v), 0, 255).toString(16).padStart(2, "0")).join("");
+  }
+
+  function mix(a, b, t) {
+    return [
+      a[0] + (b[0] - a[0]) * t,
+      a[1] + (b[1] - a[1]) * t,
+      a[2] + (b[2] - a[2]) * t,
+    ];
+  }
+
+  function rgba(rgb, a) {
+    return `rgba(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])}, ${a})`;
+  }
+
+  function luminance(rgb) {
+    return (rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722) / 255;
+  }
+
+  function deriveTheme(state) {
+    const accentBase = hexToRgb(state.accentPick);
+    const strength = clamp(state.accentStrength, 20, 100) / 100;
+    // Soften accent toward white when strength < 1
+    const accent = mix(WHITE, accentBase, 0.55 + 0.45 * strength);
+
+    // Fill: start from pick, deepen slightly, then bleed accent into chrome
+    const fillBase = hexToRgb(state.fillPick);
+    const depthT = clamp(state.fillDepth, 0, 100) / 100;
+    const deepened = mix(PAPER, fillBase, 0.65 + 0.35 * (1 - depthT * 0.5));
+    const darkened = mix(deepened, mix(fillBase, [40, 60, 72], 0.35), depthT * 0.55);
+    const tintT = clamp(state.chromeTint, 0, 100) / 100;
+    const fill = mix(darkened, accent, tintT * 0.18);
+
+    const fillHex = rgbToHex(fill);
+    const accentHex = rgbToHex(accent);
+
+    // Secondary text shifts with chrome coolness
+    const sub = mix([90, 106, 118], mix(accent, [70, 90, 100], 0.5), 0.25);
+    const tbTitle = mix(sub, fill, 0.15);
+
+    // Scroller from fill → accent-ink
+    const track = mix(fill, WHITE, 0.22);
+    const knob = mix(mix(fill, accent, 0.35), [70, 100, 115], 0.45);
+
+    return {
+      fill: fillHex,
+      accent: accentHex,
+      accentSoft: rgba(accent, 0.55),
+      cardBorder: rgba(accent, 0.14),
+      sub: rgbToHex(sub),
+      tbTitle: rgbToHex(tbTitle),
+      scrollerTrack: rgbToHex(track),
+      scrollerKnob: rgbToHex(knob),
+      title: luminance(fill) > 0.6 ? "#1f2428" : "#f2f5f7",
+    };
+  }
+
+  function nsColor(name, hex) {
+    const [r, g, b] = hexToRgb(hex);
+    return `    static let ${name} = NSColor(srgbRed: ${r} / 255, green: ${g} / 255, blue: ${b} / 255, alpha: 1)`;
+  }
+
+  function colorSwift(name, hex) {
+    const [r, g, b] = hexToRgb(hex);
+    return `    static let ${name} = Color(red: ${r} / 255, green: ${g} / 255, blue: ${b} / 255)`;
+  }
+
+  function apply(partial = {}) {
+    const state = {
+      fillPick: partial.fillPick ?? fillPick,
+      accentPick: partial.accentPick ?? accentPick,
+      fillDepth: partial.fillDepth ?? Number(els.fillDepth.value),
+      accentStrength: partial.accentStrength ?? Number(els.accentStrength.value),
+      chromeTint: partial.chromeTint ?? Number(els.chromeTint.value),
+      preset: partial.preset ?? null,
+    };
+    fillPick = state.fillPick;
+    accentPick = state.accentPick;
+
+    const t = deriveTheme(state);
+
+    root.style.setProperty("--fill", t.fill);
+    root.style.setProperty("--accent", t.accent);
+    root.style.setProperty("--accent-soft", t.accentSoft);
+    root.style.setProperty("--card-border", t.cardBorder);
+    root.style.setProperty("--sub", t.sub);
+    root.style.setProperty("--tb-title", t.tbTitle);
+    root.style.setProperty("--scroller-track", t.scrollerTrack);
+    root.style.setProperty("--scroller-knob", t.scrollerKnob);
+    root.style.setProperty("--title", t.title);
+
+    syncing = true;
+    els.fillColor.value = t.fill;
+    els.accentColor.value = t.accent;
+    els.fillDepth.value = String(state.fillDepth);
+    els.accentStrength.value = String(state.accentStrength);
+    els.chromeTint.value = String(state.chromeTint);
+    syncing = false;
+
+    els.fillHex.textContent = t.fill;
+    els.accentHex.textContent = t.accent;
+    els.fillDepthVal.textContent = String(state.fillDepth);
+    els.accentStrengthVal.textContent = String(state.accentStrength);
+    els.chromeTintVal.textContent = String(state.chromeTint);
+    els.tintLabel.textContent = `渗入 ${state.chromeTint}%`;
+
+    els.chips.innerHTML = [
+      ["底", t.fill],
+      ["主题", t.accent],
+      ["轨道", t.scrollerTrack],
+      ["滑块", t.scrollerKnob],
+    ]
+      .map(
+        ([lab, hex]) =>
+          `<span class="chip"><i style="background:${hex}"></i>${lab} ${hex}</span>`
+      )
+      .join("");
+
+    els.swiftOut.textContent =
+      "enum AppChrome {\n" +
+      colorSwift("fill", t.fill) + "\n" +
+      nsColor("nsFill", t.fill) + "\n" +
+      colorSwift("accent", t.accent) + "\n" +
+      nsColor("nsAccent", t.accent) + "\n" +
+      nsColor("nsScrollerKnob", t.scrollerKnob) + "\n" +
+      nsColor("nsScrollerTrack", t.scrollerTrack) + "\n" +
+      `    static let cardBorder = Color(red: ${(hexToRgb(t.accent)[0] / 255).toFixed(3)}, green: ${(hexToRgb(t.accent)[1] / 255).toFixed(3)}, blue: ${(hexToRgb(t.accent)[2] / 255).toFixed(3)}).opacity(0.14)\n` +
+      "}";
+
+    document.querySelectorAll("#presets button").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.preset === state.preset);
+    });
+
+    localStorage.setItem(
+      KEY,
+      JSON.stringify({
+        fillPick,
+        accentPick,
+        fillDepth: state.fillDepth,
+        accentStrength: state.accentStrength,
+        chromeTint: state.chromeTint,
+        preset: state.preset,
+        derived: t,
+      })
+    );
+  }
+
+  function loadPreset(key) {
+    const p = PRESETS[key];
+    if (!p) return;
+    fillPick = p.fill;
+    accentPick = p.accent;
+    apply({
+      fillPick: p.fill,
+      accentPick: p.accent,
+      fillDepth: p.fillDepth,
+      accentStrength: p.accentStrength,
+      chromeTint: p.chromeTint,
+      preset: key,
+    });
+    els.toast.textContent = `已应用「${p.name}」`;
+  }
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  els.fillColor.addEventListener("input", () => {
+    if (syncing) return;
+    fillPick = els.fillColor.value;
+    apply({ fillPick, preset: null });
+  });
+  els.accentColor.addEventListener("input", () => {
+    if (syncing) return;
+    accentPick = els.accentColor.value;
+    apply({ accentPick, preset: null });
+  });
+  ["fillDepth", "accentStrength", "chromeTint"].forEach((id) => {
+    els[id].addEventListener("input", () => {
+      if (!syncing) apply({ preset: null });
+    });
+  });
+
+  els.presets.querySelectorAll("button").forEach((btn) => {
+    btn.addEventListener("click", () => loadPreset(btn.dataset.preset));
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    localStorage.removeItem(KEY);
+    loadPreset("mist");
+    els.toast.textContent = "已重置为 Mist Cyan";
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(els.swiftOut.textContent);
+      els.toast.textContent = "已复制，发给我就能写进 AppChrome.swift";
+    } catch (_) {
+      els.toast.textContent = "复制失败，请手动选中下方代码";
+    }
+  });
+
+  const saved = load();
+  if (saved?.preset && PRESETS[saved.preset]) {
+    loadPreset(saved.preset);
+  } else if (saved?.fillPick && saved?.accentPick) {
+    fillPick = saved.fillPick;
+    accentPick = saved.accentPick;
+    apply({
+      fillPick,
+      accentPick,
+      fillDepth: saved.fillDepth ?? 12,
+      accentStrength: saved.accentStrength ?? 100,
+      chromeTint: saved.chromeTint ?? 35,
+      preset: null,
+    });
+  } else {
+    loadPreset("slate"); // 你刚说灰青不错，默认打开灰青方便继续微调
+  }
+})();
+</script>
 </body>
 </html>

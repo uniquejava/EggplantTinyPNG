@@ -49,55 +49,36 @@ Always use `-derivedDataPath build`. `build/` is gitignored.
 
 ---
 
-## Handoff (2026-08-15) — continue in new chat
+## Handoff (2026-08-15)
 
 ### Git
 
-- Repo initialized; baseline commit: **`3160af0`** on `main`  
-  `Initial baseline: local TinyPNG-style compressor for macOS 15+.`
-- **Uncommitted** (do not lose):
-  - `EggplantTinyPNG/UI/AppChrome.swift` — L1 Mist Cyan `#eef8fc` + transparent titlebar configurator
-  - `EggplantTinyPNG/UI/{ContentView,DropZoneView,CompressItemRow}.swift` — soft white+dashed drop; white cards on mist chrome
-  - `EggplantTinyPNG/Assets.xcassets/DropGlyph.imageset/` — stacked-photos glyph (no outer tile frame)
-  - `docs/light-ui-styles.html` — light chrome picker (L1 applied in Swift)
+- Baseline: `3160af0` — initial compressor
+- UI chrome + shipping mock committed on `main` after baseline
 
 ### Decisions locked in
 
 | Topic | Decision |
 |-------|----------|
 | UI layout | Style **A** (large drop → compact strip + progress + queue) |
-| Theme | Stay **light** (dark cyan trial reverted — user disliked) |
-| Accent / drop | Soft **cyan** `#50c7fc` as border/glyph only (user disliked solid cyan slab) |
+| Theme | Light **L1 Mist Cyan** `#eef8fc` (dark trial rejected) |
+| Accent / drop | Soft **cyan** `#50c7fc` border/glyph only (no solid cyan slab) |
 | Drop zone | White fill + cyan dashed border + dark copy; glyph template-tinted cyan |
-| Window chrome | **L1 Mist Cyan** `#eef8fc`; hidden title bar; no in-window toolbar |
-| Controls | Drop zone is the open affordance; auto-export in **File menu** (⌘E); row reveal; quiet text “清除列表” |
+| Window chrome | Unified mist title+body; no in-window toolbar |
+| Scroller | Legacy always-on when overflowing; track `#e2f0f6` / knob `#82a8ba` |
+| Controls | Drop zone opens files; auto-export in **File menu** (⌘E); row reveal; quiet “清除列表” |
 | Naming | Always `name-tiny-yyyyMMdd-HHmmss.ext` |
 | Compress | Local `pngquant` (+ optional `oxipng`), mirror `obsidian-cos-images` |
 
-### Design docs (HTML)
+### Design doc
 
-| File | Purpose |
-|------|---------|
-| `docs/ui-styles.html` | Original layout A–F (A chosen) |
-| `docs/dark-ui-styles.html` | Dark candidates (rejected for shipping; mid-gray + dashed drop) |
-| `docs/light-ui-styles.html` | **Next pick**: L1–L6 light window tints |
+- `docs/ui.html` — single shipping mock (matches current Swift UI). Open: `open docs/ui.html`
 
-**Light chrome options (user browsing, not chosen yet):**
+### Next agent tasks (likely)
 
-- **L1 Mist Cyan** `#eef8fc` unified title+body (recommended in mock)
-- **L2 Soft Sky** `#f2f6fb`
-- **L3 Seafoam** `#eef8f4`
-- **L4 Porcelain** title `#ebf0f6` / body `#f5f7fa`
-- **L5 Ice Paper** `#e6f4fa` + white floating sheet
-- **L6 Warm Sand** `#f7f3ec` (warm contrast control)
-
-Open: `open docs/light-ui-styles.html` → user replies with `L1`…`L6` → implement unified title bar + tinted surface in Swift (transparent titlebar / same fill as content; soft white+dashed drop already in Swift).
-
-### Next agent tasks (likely order)
-
-1. Polish busy-state layout if user still dislikes queue density / spacing.
-2. Commit post-baseline UI when user asks.
-3. Later: AppIcon, bundle `pngquant` in Resources, CI/DMG like Shot/Fred.
+1. AppIcon
+2. Bundle `pngquant` in Resources
+3. CI / DMG like Shot/Fred
 
 ### Sibling reference
 
