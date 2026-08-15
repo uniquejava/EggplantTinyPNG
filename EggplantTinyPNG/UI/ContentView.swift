@@ -25,8 +25,8 @@ struct ContentView: View {
 
                 if session.isEmpty {
                     Text(session.autoExport
-                          ? "拖入即压缩 · 保存为 原名-tiny-时间戳.ext"
-                          : "拖入后手动导出 · 菜单栏可开自动导出")
+                          ? String(localized: "hint.autoExport")
+                          : String(localized: "hint.manualExport"))
                         .font(.system(size: 12))
                         .foregroundStyle(themes.secondaryText)
                         .multilineTextAlignment(.center)
@@ -72,8 +72,14 @@ struct ContentView: View {
         return VStack(spacing: 8) {
             HStack {
                 Text(done
-                      ? "已完成 \(session.completedCount) / \(session.totalCount)"
-                      : "正在压缩 \(session.completedCount) / \(session.totalCount)")
+                      ? String(format: String(localized: "progress.done"),
+                               locale: .current,
+                               session.completedCount,
+                               session.totalCount)
+                      : String(format: String(localized: "progress.working"),
+                               locale: .current,
+                               session.completedCount,
+                               session.totalCount))
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(themes.primaryText)
                 Spacer()
@@ -114,12 +120,12 @@ struct ContentView: View {
                    if case .done = $0.status { return $0.outputURL == nil && $0.compressedData != nil }
                    return false
                }) {
-                Button("全部导出") { session.exportSelectedManually() }
+                Button(String(localized: "action.exportAll")) { session.exportSelectedManually() }
                     .buttonStyle(.plain)
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(themes.accent)
             }
-            Button("清除列表") { session.clearAll() }
+            Button(String(localized: "action.clearList")) { session.clearAll() }
                 .buttonStyle(.plain)
                 .font(.system(size: 13, weight: .medium))
                 .foregroundStyle(themes.secondaryText)

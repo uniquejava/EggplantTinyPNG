@@ -38,8 +38,10 @@ struct CompressItemRow: View {
                     .foregroundStyle(.secondary)
             }
             .buttonStyle(.plain)
-            .help(item.outputURL == nil ? "在访达中显示原图" : "在访达中显示压缩结果")
-            .accessibilityLabel("在访达中显示")
+            .help(item.outputURL == nil
+                  ? String(localized: "reveal.original")
+                  : String(localized: "reveal.result"))
+            .accessibilityLabel(String(localized: "reveal.accessibility"))
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 11)
@@ -57,7 +59,11 @@ struct CompressItemRow: View {
     private var subtitle: some View {
         switch item.status {
         case .queued:
-            Text(autoExport ? "将写入 \(OutputPathResolver.predictedFileName(for: item.sourceURL))" : "排队中")
+            Text(autoExport
+                  ? String(format: String(localized: "status.willWrite"),
+                           locale: .current,
+                           OutputPathResolver.predictedFileName(for: item.sourceURL))
+                  : String(localized: "status.queued"))
                 .font(.system(size: 11))
                 .foregroundStyle(.secondary)
         case .compressing:
@@ -90,14 +96,14 @@ struct CompressItemRow: View {
     private var statusBadge: some View {
         switch item.status {
         case .queued:
-            Text("等待")
+            Text(String(localized: "status.waiting"))
                 .font(.system(size: 10, weight: .semibold))
                 .padding(.horizontal, 7)
                 .padding(.vertical, 2)
                 .background(Capsule().fill(themes.fill))
                 .foregroundStyle(.secondary)
         case .compressing:
-            Text("压缩中")
+            Text(String(localized: "status.compressing"))
                 .font(.system(size: 10, weight: .semibold))
                 .padding(.horizontal, 7)
                 .padding(.vertical, 2)
@@ -113,7 +119,7 @@ struct CompressItemRow: View {
                     .foregroundStyle(themes.savingsColor)
             }
         case .failed:
-            Text("失败")
+            Text(String(localized: "status.failed"))
                 .font(.system(size: 10, weight: .semibold))
                 .padding(.horizontal, 7)
                 .padding(.vertical, 2)

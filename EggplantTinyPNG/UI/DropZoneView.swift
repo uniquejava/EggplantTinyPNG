@@ -19,10 +19,10 @@ struct DropZoneView: View {
                         icon
                             .frame(width: 32, height: 32)
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("继续添加图片")
+                            Text(String(localized: "drop.continue.title"))
                                 .font(.system(size: 13, weight: .semibold))
                                 .foregroundStyle(themes.primaryText)
-                            Text("拖放到此处，或点击选择")
+                            Text(String(localized: "drop.continue.subtitle"))
                                 .font(.system(size: 11))
                                 .foregroundStyle(themes.secondaryText)
                         }
@@ -34,13 +34,13 @@ struct DropZoneView: View {
                     VStack(spacing: 10) {
                         icon
                             .frame(width: 64, height: 64)
-                        Text("拖放图片到此处")
+                        Text(String(localized: "drop.empty.title"))
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundStyle(themes.primaryText)
-                        Text("PNG · JPEG · WebP")
+                        Text(String(localized: "drop.empty.formats"))
                             .font(.system(size: 13))
                             .foregroundStyle(themes.secondaryText)
-                        Text("或点击选择文件")
+                        Text(String(localized: "drop.empty.click"))
                             .font(.system(size: 12))
                             .foregroundStyle(themes.secondaryText.opacity(0.85))
                     }

@@ -6,23 +6,26 @@ import SwiftUI
 struct AppTheme: Identifiable, Hashable {
     enum ID: String, CaseIterable, Identifiable {
         case light
-        case porcelain
-        case mist
+        case purple
         case blue
         case cyan
         case green
-        case purple
         case rose
         case orange
+        case porcelain
+        case mist
         case slate
         case dark
         case midnight
 
         var id: String { rawValue }
+
+        var name: String {
+            String(localized: String.LocalizationValue("theme.\(rawValue)"))
+        }
     }
 
     let id: ID
-    let name: String
     let isDark: Bool
     /// Window / title fill (sRGB 0…1).
     let fillRGB: SIMD3<Double>
@@ -31,6 +34,7 @@ struct AppTheme: Identifiable, Hashable {
     let scrollerKnobRGB: SIMD3<Double>
     let scrollerTrackRGB: SIMD3<Double>
 
+    var name: String { id.name }
     var fill: Color { Self.color(fillRGB) }
     var accent: Color { Self.color(accentRGB) }
     var cardFill: Color { Self.color(cardRGB) }
@@ -57,53 +61,52 @@ struct AppTheme: Identifiable, Hashable {
 
     var savingsColor: Color { isDark ? Self.savingsDark : Self.savings }
 
-    /// Popular light + accent + dark themes (swatch order).
+    /// Light → brand purple → hue accents → soft neutrals → darks.
     static let all: [AppTheme] = [
-        make(.light, "浅色", dark: false,
+        make(.light, dark: false,
              fill: 0xF5F5F7, accent: 0x007AFF, card: 0xFFFFFF,
              knob: 0x8E8E93, track: 0xEBEBED),
-        make(.porcelain, "Porcelain", dark: false,
-             fill: 0xECF0F4, accent: 0x7594B3, card: 0xFFFFFF,
-             knob: 0x8A9FAE, track: 0xF0F3F6),
-        make(.mist, "Mist", dark: false,
-             fill: 0xE0F1F8, accent: 0x50C7FC, card: 0xFFFFFF,
-             knob: 0x7FA9BD, track: 0xE7F4FA),
-        make(.blue, "蓝", dark: false,
-             fill: 0xEAF2FF, accent: 0x3B82F6, card: 0xFFFFFF,
-             knob: 0x7AA0D6, track: 0xE8F0FC),
-        make(.cyan, "青", dark: false,
-             fill: 0xE6F8F9, accent: 0x06B6D4, card: 0xFFFFFF,
-             knob: 0x5FB8C4, track: 0xE4F4F6),
-        make(.green, "绿", dark: false,
-             fill: 0xEEFAF1, accent: 0x22C55E, card: 0xFFFFFF,
-             knob: 0x6BBF86, track: 0xE8F5EC),
-        make(.purple, "紫", dark: false,
+        make(.purple, dark: false,
              fill: 0xF4F0FF, accent: 0x8B5CF6, card: 0xFFFFFF,
              knob: 0xA78BDB, track: 0xEFEAFB),
-        make(.rose, "红", dark: false,
+        make(.blue, dark: false,
+             fill: 0xEAF2FF, accent: 0x3B82F6, card: 0xFFFFFF,
+             knob: 0x7AA0D6, track: 0xE8F0FC),
+        make(.cyan, dark: false,
+             fill: 0xE6F8F9, accent: 0x06B6D4, card: 0xFFFFFF,
+             knob: 0x5FB8C4, track: 0xE4F4F6),
+        make(.green, dark: false,
+             fill: 0xEEFAF1, accent: 0x22C55E, card: 0xFFFFFF,
+             knob: 0x6BBF86, track: 0xE8F5EC),
+        make(.rose, dark: false,
              fill: 0xFFF1F3, accent: 0xF43F5E, card: 0xFFFFFF,
              knob: 0xE07A8C, track: 0xFCEAED),
-        make(.orange, "橙", dark: false,
+        make(.orange, dark: false,
              fill: 0xFFF6EB, accent: 0xF97316, card: 0xFFFFFF,
              knob: 0xE09A5C, track: 0xFCEFDF),
-        make(.slate, "灰青", dark: false,
+        make(.porcelain, dark: false,
+             fill: 0xECF0F4, accent: 0x7594B3, card: 0xFFFFFF,
+             knob: 0x8A9FAE, track: 0xF0F3F6),
+        make(.mist, dark: false,
+             fill: 0xE0F1F8, accent: 0x50C7FC, card: 0xFFFFFF,
+             knob: 0x7FA9BD, track: 0xE7F4FA),
+        make(.slate, dark: false,
              fill: 0xE0E6EA, accent: 0x7295A8, card: 0xFFFFFF,
              knob: 0x869CA8, track: 0xE7ECEF),
-        make(.dark, "深色", dark: true,
+        make(.dark, dark: true,
              fill: 0x1C1C1E, accent: 0x0A84FF, card: 0x2C2C2E,
              knob: 0x636366, track: 0x2C2C2E),
-        make(.midnight, "午夜", dark: true,
+        make(.midnight, dark: true,
              fill: 0x14161C, accent: 0xBF5AF2, card: 0x22252E,
              knob: 0x6E6A78, track: 0x1E2129),
     ]
 
     static func named(_ id: ID) -> AppTheme {
-        all.first { $0.id == id } ?? all.first { $0.id == .porcelain }!
+        all.first { $0.id == id } ?? all.first { $0.id == .purple }!
     }
 
     private static func make(
         _ id: ID,
-        _ name: String,
         dark: Bool,
         fill: UInt32,
         accent: UInt32,
@@ -113,7 +116,6 @@ struct AppTheme: Identifiable, Hashable {
     ) -> AppTheme {
         AppTheme(
             id: id,
-            name: name,
             isDark: dark,
             fillRGB: rgb(fill),
             accentRGB: rgb(accent),
@@ -147,7 +149,7 @@ extension Notification.Name {
 final class ThemeStore: ObservableObject {
     static let shared = ThemeStore()
 
-    private static let defaultsKey = "appThemeID"
+    private static let defaultsKey = "appThemeID.v2"
 
     @Published var id: AppTheme.ID {
         didSet {
@@ -178,45 +180,33 @@ final class ThemeStore: ObservableObject {
            let saved = AppTheme.ID(rawValue: raw) {
             id = saved
         } else {
-            id = .porcelain
+            id = .purple
         }
     }
 }
 
-/// Title-bar theme chips — fill face + accent ring (single compact row).
-struct ThemeSwatchBar: View {
-    @ObservedObject private var themes = ThemeStore.shared
+/// Mini window preview: chrome fill + accent stripe (used in Settings theme grid).
+struct ThemeChip: View {
+    let theme: AppTheme
+    let selected: Bool
+    var size: CGFloat = 30
 
     var body: some View {
-        HStack(spacing: 5) {
-            ForEach(AppTheme.all) { theme in
-                Button {
-                    withAnimation(.easeOut(duration: 0.15)) {
-                        themes.id = theme.id
-                    }
-                } label: {
-                    ZStack {
-                        Circle()
-                            .fill(theme.fill)
-                        Circle()
-                            .strokeBorder(
-                                theme.accent,
-                                lineWidth: themes.id == theme.id ? 1.8 : 1
-                            )
-                    }
-                    .frame(width: 13, height: 13)
-                    .shadow(color: .black.opacity(theme.isDark ? 0.35 : 0.10), radius: 0.8, y: 0.4)
-                }
-                .buttonStyle(.plain)
-                .help(theme.name)
-                .accessibilityLabel(theme.name)
-            }
+        VStack(spacing: 0) {
+            theme.accent
+                .frame(height: max(5, size * 0.22))
+            theme.fill
         }
-        .padding(.leading, 4)
-        .padding(.trailing, 10)
-        // Title-bar accessory height tracks the system title bar.
-        .frame(height: 28)
-        .fixedSize(horizontal: true, vertical: true)
+        .frame(width: size, height: size)
+        .clipShape(RoundedRectangle(cornerRadius: size * 0.22, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: size * 0.22, style: .continuous)
+                .strokeBorder(
+                    selected ? theme.accent : Color.primary.opacity(theme.isDark ? 0.35 : 0.12),
+                    lineWidth: selected ? 2 : 1
+                )
+        )
+        .shadow(color: .black.opacity(theme.isDark ? 0.35 : 0.08), radius: selected ? 2 : 0.5, y: 0.5)
     }
 }
 
@@ -375,7 +365,6 @@ struct WindowChromeConfigurator: NSViewRepresentable {
         private weak var observedWindow: NSWindow?
         private var observers: [NSObjectProtocol] = []
         private var findAttempts = 0
-        private var themeAccessory: NSTitlebarAccessoryViewController?
 
         deinit {
             observers.forEach { NotificationCenter.default.removeObserver($0) }
@@ -454,38 +443,7 @@ struct WindowChromeConfigurator: NSViewRepresentable {
                 window.standardWindowButton(kind)?.alphaValue = 1
             }
 
-            installThemeAccessory(on: window)
             paintTitlebar(window)
-        }
-
-        private func installThemeAccessory(on window: NSWindow) {
-            if themeAccessory == nil {
-                let host = NSHostingView(rootView: ThemeSwatchBar())
-                host.translatesAutoresizingMaskIntoConstraints = false
-                let size = host.fittingSize
-                host.frame = NSRect(origin: .zero, size: size)
-
-                let accessory = NSTitlebarAccessoryViewController()
-                accessory.layoutAttribute = .trailing
-                accessory.view = host
-                themeAccessory = accessory
-            }
-
-            guard let accessory = themeAccessory else { return }
-            if !window.titlebarAccessoryViewControllers.contains(where: { $0 === accessory }) {
-                // Drop any stale theme accessories from prior configurators.
-                for (idx, existing) in window.titlebarAccessoryViewControllers.enumerated().reversed()
-                where existing.view is NSHostingView<ThemeSwatchBar> {
-                    window.removeTitlebarAccessoryViewController(at: idx)
-                }
-                window.addTitlebarAccessoryViewController(accessory)
-            }
-
-            if let host = accessory.view as? NSHostingView<ThemeSwatchBar> {
-                host.rootView = ThemeSwatchBar()
-                let size = host.fittingSize
-                host.frame.size = size
-            }
         }
 
         private func paintTitlebar(_ window: NSWindow) {
@@ -502,14 +460,6 @@ struct WindowChromeConfigurator: NSViewRepresentable {
             if let content = window.contentView {
                 content.wantsLayer = true
                 content.layer?.backgroundColor = cg
-            }
-
-            // Keep accessory chrome transparent so theme fill shows through.
-            for accessory in window.titlebarAccessoryViewControllers {
-                accessory.view.wantsLayer = true
-                accessory.view.layer?.backgroundColor = .clear
-                accessory.view.superview?.wantsLayer = true
-                accessory.view.superview?.layer?.backgroundColor = cg
             }
 
             let separatorClass = NSClassFromString("NSTitlebarSeparatorView")
