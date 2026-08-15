@@ -1,0 +1,316 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* EggplantTinyPNGApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* EggplantTinyPNGApp.swift */; };
+		A10000000000000000000002 /* CompressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* CompressItem.swift */; };
+		A10000000000000000000003 /* ToolFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* ToolFinder.swift */; };
+		A10000000000000000000004 /* PngquantCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* PngquantCompressor.swift */; };
+		A10000000000000000000005 /* JPEGCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000005 /* JPEGCompressor.swift */; };
+		A10000000000000000000006 /* ImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000006 /* ImageCompressor.swift */; };
+		A10000000000000000000007 /* OutputPathResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000007 /* OutputPathResolver.swift */; };
+		A10000000000000000000008 /* CompressSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000008 /* CompressSession.swift */; };
+		A10000000000000000000009 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* ContentView.swift */; };
+		A1000000000000000000000A /* DropZoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000A /* DropZoneView.swift */; };
+		A1000000000000000000000B /* CompressItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000B /* CompressItemRow.swift */; };
+		A1000000000000000000000C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000C /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C10000000000000000000001 /* EggplantTinyPNG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EggplantTinyPNG.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10000000000000000000001 /* EggplantTinyPNGApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EggplantTinyPNGApp.swift; sourceTree = "<group>"; };
+		B10000000000000000000002 /* CompressItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressItem.swift; sourceTree = "<group>"; };
+		B10000000000000000000003 /* ToolFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolFinder.swift; sourceTree = "<group>"; };
+		B10000000000000000000004 /* PngquantCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PngquantCompressor.swift; sourceTree = "<group>"; };
+		B10000000000000000000005 /* JPEGCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JPEGCompressor.swift; sourceTree = "<group>"; };
+		B10000000000000000000006 /* ImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompressor.swift; sourceTree = "<group>"; };
+		B10000000000000000000007 /* OutputPathResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputPathResolver.swift; sourceTree = "<group>"; };
+		B10000000000000000000008 /* CompressSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressSession.swift; sourceTree = "<group>"; };
+		B10000000000000000000009 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B1000000000000000000000A /* DropZoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropZoneView.swift; sourceTree = "<group>"; };
+		B1000000000000000000000B /* CompressItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressItemRow.swift; sourceTree = "<group>"; };
+		B1000000000000000000000C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B1000000000000000000000D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B1000000000000000000000E /* EggplantTinyPNG.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EggplantTinyPNG.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D10000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E10000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				E10000000000000000000002 /* EggplantTinyPNG */,
+				E10000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E10000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C10000000000000000000001 /* EggplantTinyPNG.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000002 /* EggplantTinyPNG */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000001 /* EggplantTinyPNGApp.swift */,
+				E10000000000000000000004 /* Models */,
+				E10000000000000000000005 /* Services */,
+				E10000000000000000000006 /* ViewModels */,
+				E10000000000000000000007 /* UI */,
+				B1000000000000000000000C /* Assets.xcassets */,
+				B1000000000000000000000D /* Info.plist */,
+				B1000000000000000000000E /* EggplantTinyPNG.entitlements */,
+			);
+			path = EggplantTinyPNG;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000002 /* CompressItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000005 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000003 /* ToolFinder.swift */,
+				B10000000000000000000004 /* PngquantCompressor.swift */,
+				B10000000000000000000005 /* JPEGCompressor.swift */,
+				B10000000000000000000006 /* ImageCompressor.swift */,
+				B10000000000000000000007 /* OutputPathResolver.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000006 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000008 /* CompressSession.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000007 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000009 /* ContentView.swift */,
+				B1000000000000000000000A /* DropZoneView.swift */,
+				B1000000000000000000000B /* CompressItemRow.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F10000000000000000000001 /* EggplantTinyPNG */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F10000000000000000000004 /* Build configuration list for PBXNativeTarget "EggplantTinyPNG" */;
+			buildPhases = (
+				F10000000000000000000002 /* Sources */,
+				D10000000000000000000001 /* Frameworks */,
+				F10000000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EggplantTinyPNG;
+			productName = EggplantTinyPNG;
+			productReference = C10000000000000000000001 /* EggplantTinyPNG.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F10000000000000000000010 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					F10000000000000000000001 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+				};
+			};
+			buildConfigurationList = F10000000000000000000011 /* Build configuration list for PBXProject "EggplantTinyPNG" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E10000000000000000000001;
+			productRefGroup = E10000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F10000000000000000000001 /* EggplantTinyPNG */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F10000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000000000000000000000C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F10000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* EggplantTinyPNGApp.swift in Sources */,
+				A10000000000000000000002 /* CompressItem.swift in Sources */,
+				A10000000000000000000003 /* ToolFinder.swift in Sources */,
+				A10000000000000000000004 /* PngquantCompressor.swift in Sources */,
+				A10000000000000000000005 /* JPEGCompressor.swift in Sources */,
+				A10000000000000000000006 /* ImageCompressor.swift in Sources */,
+				A10000000000000000000007 /* OutputPathResolver.swift in Sources */,
+				A10000000000000000000008 /* CompressSession.swift in Sources */,
+				A10000000000000000000009 /* ContentView.swift in Sources */,
+				A1000000000000000000000A /* DropZoneView.swift in Sources */,
+				A1000000000000000000000B /* CompressItemRow.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F10000000000000000000020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F10000000000000000000021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		F10000000000000000000022 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = EggplantTinyPNG/EggplantTinyPNG.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M5J7K9HVYB;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = EggplantTinyPNG/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = click.yinsb.EggplantTinyPNG;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F10000000000000000000023 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = EggplantTinyPNG/EggplantTinyPNG.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M5J7K9HVYB;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = EggplantTinyPNG/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = click.yinsb.EggplantTinyPNG;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F10000000000000000000011 /* Build configuration list for PBXProject "EggplantTinyPNG" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F10000000000000000000020 /* Debug */,
+				F10000000000000000000021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F10000000000000000000004 /* Build configuration list for PBXNativeTarget "EggplantTinyPNG" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F10000000000000000000022 /* Debug */,
+				F10000000000000000000023 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F10000000000000000000010 /* Project object */;
+}
