@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 
 struct ContentView: View {
     @ObservedObject var session: CompressSession
+    @EnvironmentObject private var themes: ThemeStore
     @State private var isDropTargeted = false
 
     var body: some View {
@@ -27,7 +28,7 @@ struct ContentView: View {
                           ? "拖入即压缩 · 保存为 原名-tiny-时间戳.ext"
                           : "拖入后手动导出 · 菜单栏可开自动导出")
                         .font(.system(size: 12))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(themes.secondaryText)
                         .multilineTextAlignment(.center)
                 }
 
@@ -41,10 +42,11 @@ struct ContentView: View {
         }
         // Hide SwiftUI's fading overlay; AppKit legacy scroller stays on when overflowing.
         .scrollIndicators(.hidden)
-        .background(AppChrome.fill)
+        .background(themes.fill)
         .background(ScrollChromeConfigurator())
-        .background(WindowChromeConfigurator(background: AppChrome.nsFill))
-        .containerBackground(AppChrome.fill, for: .window)
+        .background(WindowChromeConfigurator(background: themes.nsFill))
+        .containerBackground(themes.fill, for: .window)
+        .preferredColorScheme(themes.isDark ? .dark : .light)
         .frame(minWidth: 480, minHeight: 360)
         .onAppear { session.refreshToolStatus() }
     }
@@ -73,23 +75,24 @@ struct ContentView: View {
                       ? "已完成 \(session.completedCount) / \(session.totalCount)"
                       : "正在压缩 \(session.completedCount) / \(session.totalCount)")
                     .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(themes.primaryText)
                 Spacer()
                 Text("\(Int(session.overallProgress * 100))%")
                     .font(.system(size: 13).monospacedDigit())
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(themes.secondaryText)
             }
             ProgressView(value: session.overallProgress)
                 .controlSize(.regular)
-                .tint(AppChrome.accent)
+                .tint(themes.accent)
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 10)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color.white)
+                .fill(themes.cardFill)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .strokeBorder(AppChrome.cardBorder, lineWidth: 1)
+                        .strokeBorder(themes.cardBorder, lineWidth: 1)
                 )
         )
         .opacity(done ? 0.9 : 1)
@@ -114,12 +117,12 @@ struct ContentView: View {
                 Button("全部导出") { session.exportSelectedManually() }
                     .buttonStyle(.plain)
                     .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(AppChrome.accent)
+                    .foregroundStyle(themes.accent)
             }
             Button("清除列表") { session.clearAll() }
                 .buttonStyle(.plain)
                 .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(themes.secondaryText)
         }
         .padding(.top, 6)
         .padding(.trailing, 2)

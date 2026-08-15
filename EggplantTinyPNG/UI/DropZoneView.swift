@@ -3,14 +3,13 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct DropZoneView: View {
+    @EnvironmentObject private var themes: ThemeStore
+
     let isCompact: Bool
     let isTargeted: Bool
     let onTap: () -> Void
 
-    private static let idleFill = Color.white
-    private static let activeFill = Color(red: 232 / 255, green: 246 / 255, blue: 252 / 255)
-    private static let titleColor = Color(red: 0.12, green: 0.14, blue: 0.16)
-    private static let subtitleColor = Color(red: 0.35, green: 0.42, blue: 0.48)
+    private var activeFill: Color { themes.accent.opacity(themes.isDark ? 0.18 : 0.10) }
 
     var body: some View {
         Button(action: onTap) {
@@ -22,10 +21,10 @@ struct DropZoneView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("继续添加图片")
                                 .font(.system(size: 13, weight: .semibold))
-                                .foregroundStyle(Self.titleColor)
+                                .foregroundStyle(themes.primaryText)
                             Text("拖放到此处，或点击选择")
                                 .font(.system(size: 11))
-                                .foregroundStyle(Self.subtitleColor)
+                                .foregroundStyle(themes.secondaryText)
                         }
                         Spacer(minLength: 0)
                     }
@@ -37,25 +36,25 @@ struct DropZoneView: View {
                             .frame(width: 64, height: 64)
                         Text("拖放图片到此处")
                             .font(.system(size: 16, weight: .semibold))
-                            .foregroundStyle(Self.titleColor)
+                            .foregroundStyle(themes.primaryText)
                         Text("PNG · JPEG · WebP")
                             .font(.system(size: 13))
-                            .foregroundStyle(Self.subtitleColor)
+                            .foregroundStyle(themes.secondaryText)
                         Text("或点击选择文件")
                             .font(.system(size: 12))
-                            .foregroundStyle(Self.subtitleColor.opacity(0.85))
+                            .foregroundStyle(themes.secondaryText.opacity(0.85))
                     }
                     .frame(maxWidth: .infinity, minHeight: 220)
                 }
             }
             .background(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(isTargeted ? Self.activeFill : Self.idleFill)
+                    .fill(isTargeted ? activeFill : themes.cardFill)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .strokeBorder(
-                        AppChrome.accent.opacity(isTargeted ? 0.95 : 0.55),
+                        themes.accent.opacity(isTargeted ? 0.95 : 0.55),
                         style: StrokeStyle(lineWidth: isTargeted ? 2 : 1.5, dash: [6, 4])
                     )
             )
@@ -70,7 +69,7 @@ struct DropZoneView: View {
             .renderingMode(.template)
             .interpolation(.high)
             .aspectRatio(contentMode: .fit)
-            .foregroundStyle(AppChrome.accent)
+            .foregroundStyle(themes.accent)
             .scaleEffect(isTargeted ? 1.04 : 1)
     }
 }

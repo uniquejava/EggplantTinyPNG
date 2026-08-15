@@ -7,6 +7,7 @@ struct EggplantTinyPNGApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(session: session)
+                .environmentObject(ThemeStore.shared)
         }
         .windowStyle(.automatic)
         .windowResizability(.contentSize)

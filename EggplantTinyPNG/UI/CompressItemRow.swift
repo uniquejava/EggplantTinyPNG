@@ -2,6 +2,8 @@ import AppKit
 import SwiftUI
 
 struct CompressItemRow: View {
+    @EnvironmentObject private var themes: ThemeStore
+
     let item: CompressItem
     let autoExport: Bool
 
@@ -18,6 +20,7 @@ struct CompressItemRow: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(item.displayName)
                     .font(.system(size: 13.5, weight: .medium))
+                    .foregroundStyle(themes.primaryText)
                     .lineLimit(1)
                 subtitle
             }
@@ -42,10 +45,10 @@ struct CompressItemRow: View {
         .padding(.vertical, 11)
         .background(
             RoundedRectangle(cornerRadius: 9, style: .continuous)
-                .fill(Color.white)
+                .fill(themes.cardFill)
                 .overlay(
                     RoundedRectangle(cornerRadius: 9, style: .continuous)
-                        .strokeBorder(AppChrome.cardBorder, lineWidth: 1)
+                        .strokeBorder(themes.cardBorder, lineWidth: 1)
                 )
         )
     }
@@ -91,23 +94,23 @@ struct CompressItemRow: View {
                 .font(.system(size: 10, weight: .semibold))
                 .padding(.horizontal, 7)
                 .padding(.vertical, 2)
-                .background(Capsule().fill(AppChrome.fill))
+                .background(Capsule().fill(themes.fill))
                 .foregroundStyle(.secondary)
         case .compressing:
             Text("压缩中")
                 .font(.system(size: 10, weight: .semibold))
                 .padding(.horizontal, 7)
                 .padding(.vertical, 2)
-                .background(Capsule().fill(AppChrome.accent.opacity(0.14)))
-                .foregroundStyle(AppChrome.accent)
+                .background(Capsule().fill(themes.accent.opacity(0.14)))
+                .foregroundStyle(themes.accent)
         case .done:
             if let s = item.savingsFraction {
                 Text(String(format: "−%.0f%%", s * 100))
                     .font(.system(size: 10, weight: .semibold))
                     .padding(.horizontal, 7)
                     .padding(.vertical, 2)
-                    .background(Capsule().fill(AppChrome.savings.opacity(0.12)))
-                    .foregroundStyle(AppChrome.savings)
+                    .background(Capsule().fill(themes.savingsColor.opacity(0.12)))
+                    .foregroundStyle(themes.savingsColor)
             }
         case .failed:
             Text("失败")
