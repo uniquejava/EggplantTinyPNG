@@ -19,6 +19,7 @@
 		A1000000000000000000000A /* DropZoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000A /* DropZoneView.swift */; };
 		A1000000000000000000000B /* CompressItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000B /* CompressItemRow.swift */; };
 		A1000000000000000000000C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000C /* Assets.xcassets */; };
+		A1000000000000000000000F /* AppChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000F /* AppChrome.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		B10000000000000000000009 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B1000000000000000000000A /* DropZoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropZoneView.swift; sourceTree = "<group>"; };
 		B1000000000000000000000B /* CompressItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressItemRow.swift; sourceTree = "<group>"; };
+		B1000000000000000000000F /* AppChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppChrome.swift; sourceTree = "<group>"; };
 		B1000000000000000000000C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B1000000000000000000000D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1000000000000000000000E /* EggplantTinyPNG.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EggplantTinyPNG.entitlements; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 		E10000000000000000000007 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				B1000000000000000000000F /* AppChrome.swift */,
 				B10000000000000000000009 /* ContentView.swift */,
 				B1000000000000000000000A /* DropZoneView.swift */,
 				B1000000000000000000000B /* CompressItemRow.swift */,
@@ -196,6 +199,7 @@
 				A10000000000000000000006 /* ImageCompressor.swift in Sources */,
 				A10000000000000000000007 /* OutputPathResolver.swift in Sources */,
 				A10000000000000000000008 /* CompressSession.swift in Sources */,
+				A1000000000000000000000F /* AppChrome.swift in Sources */,
 				A10000000000000000000009 /* ContentView.swift in Sources */,
 				A1000000000000000000000A /* DropZoneView.swift in Sources */,
 				A1000000000000000000000B /* CompressItemRow.swift in Sources */,

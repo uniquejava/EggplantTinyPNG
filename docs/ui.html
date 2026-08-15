@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EggplantTinyPNG — UI</title>
+<style>
+  :root {
+    --fill: #eef8fc;
+    --accent: #50c7fc;
+    --card-border: rgba(80, 199, 252, 0.14);
+    --title: #1f2428;
+    --sub: #5a6a76;
+    --savings: #248a3d;
+    --scroller-track: #e2f0f6;
+    --scroller-knob: #82a8ba;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 40px 24px;
+    font: 13px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    color: #1a1a1a;
+    background:
+      radial-gradient(1100px 520px at 50% -8%, #9eb0c0 0%, transparent 55%),
+      linear-gradient(180deg, #6d7d8c, #4a5866);
+  }
+  .caption {
+    position: fixed;
+    left: 24px;
+    bottom: 20px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 12px;
+    max-width: 420px;
+  }
+  .caption strong { color: #fff; font-weight: 600; }
+
+  .win {
+    width: 520px;
+    height: 460px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--fill);
+    box-shadow: 0 22px 56px rgba(0, 0, 0, 0.38);
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+  }
+  .tb {
+    height: 44px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    background: var(--fill);
+    position: relative;
+  }
+  .dots { display: flex; gap: 7px; z-index: 1; }
+  .dots i { width: 12px; height: 12px; border-radius: 50%; display: block; }
+  .dots .r { background: #ff5f57; }
+  .dots .y { background: #febc2e; }
+  .dots .g { background: #28c840; }
+  .tb .title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 560;
+    font-size: 12px;
+    color: #5a7a88;
+    white-space: nowrap;
+  }
+
+  .scroll {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 15px;
+  }
+  .body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  /* Legacy mist-cyan scroller (always on when overflowing) */
+  .scroller {
+    background: var(--scroller-track);
+    position: relative;
+  }
+  .scroller::after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    top: 18%;
+    height: 28%;
+    border-radius: 999px;
+    background: var(--scroller-knob);
+  }
+
+  .drop {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 80px;
+    padding: 0 16px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1.5px dashed rgba(80, 199, 252, 0.55);
+  }
+  .glyph {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    background: var(--accent);
+    -webkit-mask: url("../EggplantTinyPNG/Assets.xcassets/DropGlyph.imageset/DropGlyph.png") center / contain no-repeat;
+    mask: url("../EggplantTinyPNG/Assets.xcassets/DropGlyph.imageset/DropGlyph.png") center / contain no-repeat;
+  }
+  .drop h3 {
+    margin: 0 0 2px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--title);
+  }
+  .drop p {
+    margin: 0;
+    font-size: 11px;
+    color: var(--sub);
+  }
+
+  .prog {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid var(--card-border);
+    opacity: 0.9;
+  }
+  .prog .top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .prog .pct {
+    font-variant-numeric: tabular-nums;
+    color: var(--sub);
+    font-weight: 400;
+  }
+  .bar {
+    height: 4px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.08);
+  }
+  .bar > i {
+    display: block;
+    height: 100%;
+    width: 100%;
+    border-radius: inherit;
+    background: var(--accent);
+  }
+
+  .queue {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    border-radius: 9px;
+    background: #fff;
+    border: 1px solid var(--card-border);
+  }
+  .thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    flex: 0 0 auto;
+    background: linear-gradient(135deg, #a8d5ff, #7eb8f0 40%, #f5c6a0);
+  }
+  .thumb.b { background: linear-gradient(135deg, #c8e6c0, #8fd0a8 45%, #f0d4a8); }
+  .thumb.c { background: linear-gradient(135deg, #f5c6d8, #e8a0c0 40%, #b8d4f0); }
+  .thumb.d { background: linear-gradient(135deg, #d4c8f0, #a8b8e8 40%, #f0e0b0); }
+  .meta { flex: 1; min-width: 0; }
+  .meta .name {
+    font-weight: 500;
+    font-size: 13.5px;
+    color: var(--title);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .meta .sub {
+    font-size: 11px;
+    color: var(--sub);
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pill {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: rgba(36, 138, 61, 0.12);
+    color: var(--savings);
+    flex: 0 0 auto;
+  }
+  .reveal {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    background:
+      radial-gradient(circle at 50% 50%, transparent 0 28%, #8a9199 29% 100%),
+      linear-gradient(90deg, #8a9199, #8a9199);
+    background-size: 100% 100%, 5px 1.5px;
+    background-position: center, 55% 50%;
+    background-repeat: no-repeat;
+    opacity: 0.55;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 6px 2px 0 0;
+  }
+  .actions button {
+    appearance: none;
+    border: 0;
+    background: none;
+    padding: 0;
+    font: 500 13px/1 -apple-system, sans-serif;
+    color: var(--sub);
+    cursor: default;
+  }
+</style>
+</head>
+<body>
+  <div class="win" aria-label="EggplantTinyPNG current UI">
+    <div class="tb">
+      <div class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+      <div class="title">EggplantTinyPNG</div>
+    </div>
+    <div class="scroll">
+      <div class="body">
+        <div class="drop">
+          <div class="glyph" aria-hidden="true"></div>
+          <div>
+            <h3>继续添加图片</h3>
+            <p>拖放到此处，或点击选择</p>
+          </div>
+        </div>
+
+        <div class="prog">
+          <div class="top">
+            <span>已完成 4 / 4</span>
+            <span class="pct">100%</span>
+          </div>
+          <div class="bar"><i></i></div>
+        </div>
+
+        <div class="queue">
+          <div class="row">
+            <div class="thumb"></div>
+            <div class="meta">
+              <div class="name">hero-banner.png</div>
+              <div class="sub">→ hero-banner-tiny-20260815-214602.png · 1.2 MB→380 KB</div>
+            </div>
+            <span class="pill">−68%</span>
+            <div class="reveal" title="在访达中显示"></div>
+          </div>
+          <div class="row">
+            <div class="thumb b"></div>
+            <div class="meta">
+              <div class="name">product-shot.jpg</div>
+              <div class="sub">→ product-shot-tiny-20260815-214603.jpg · 840 KB→210 KB</div>
+            </div>
+            <span class="pill">−75%</span>
+            <div class="reveal"></div>
+          </div>
+          <div class="row">
+            <div class="thumb c"></div>
+            <div class="meta">
+              <div class="name">avatar.webp</div>
+              <div class="sub">→ avatar-tiny-20260815-214603.webp · 96 KB→42 KB</div>
+            </div>
+            <span class="pill">−56%</span>
+            <div class="reveal"></div>
+          </div>
+          <div class="row">
+            <div class="thumb d"></div>
+            <div class="meta">
+              <div class="name">screenshot-long.png</div>
+              <div class="sub">→ screenshot-long-tiny-20260815-214604.png · 2.1 MB→640 KB</div>
+            </div>
+            <span class="pill">−70%</span>
+            <div class="reveal"></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button">清除列表</button>
+        </div>
+      </div>
+      <div class="scroller" title="scroll track #e2f0f6 · knob #82a8ba" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <p class="caption">
+    <strong>Shipping UI</strong> — L1 Mist Cyan · 紧凑投放区 · 白卡片队列 ·
+    常显滚动条（轨道 <code>#e2f0f6</code> / 滑块 <code>#82a8ba</code>）·
+    自动导出在菜单栏
+  </p>
+</body>
+</html>

@@ -7,60 +7,46 @@ struct ContentView: View {
     @State private var isDropTargeted = false
 
     var body: some View {
-        VStack(spacing: 0) {
-            toolbar
-            Divider()
-            ScrollView {
-                VStack(spacing: 8) {
-                    if let msg = session.toolMissingMessage {
-                        warningBanner(msg)
-                    }
-
-                    DropZoneView(
-                        isCompact: !session.isEmpty,
-                        isTargeted: isDropTargeted,
-                        onTap: openPanel
-                    )
-                    .modifier(FileDropModifier(isTargeted: $isDropTargeted) { urls in
-                        session.addURLs(urls)
-                    })
-
-                    if session.autoExport && session.isEmpty {
-                        Text("自动导出已开 · 保存为 原名-tiny-时间戳.ext")
-                            .font(.system(size: 11))
-                            .foregroundStyle(.secondary)
-                    }
-
-                    if !session.isEmpty {
-                        progressCard
-                        summaryHeader
-                        queue
-                        actions
-                    }
+        ScrollView {
+            VStack(spacing: 12) {
+                if let msg = session.toolMissingMessage {
+                    warningBanner(msg)
                 }
-                .padding(12)
+
+                DropZoneView(
+                    isCompact: !session.isEmpty,
+                    isTargeted: isDropTargeted,
+                    onTap: openPanel
+                )
+                .modifier(FileDropModifier(isTargeted: $isDropTargeted) { urls in
+                    session.addURLs(urls)
+                })
+
+                if session.isEmpty {
+                    Text(session.autoExport
+                          ? "拖入即压缩 · 保存为 原名-tiny-时间戳.ext"
+                          : "拖入后手动导出 · 菜单栏可开自动导出")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+
+                if !session.isEmpty {
+                    progressCard
+                    queue
+                    actions
+                }
             }
-            .background(Color(nsColor: .windowBackgroundColor))
+            .padding(16)
         }
-        .frame(minWidth: 480, minHeight: 420)
+        // Hide SwiftUI's fading overlay; AppKit legacy scroller stays on when overflowing.
+        .scrollIndicators(.hidden)
+        .background(AppChrome.fill)
+        .background(ScrollChromeConfigurator())
+        .background(WindowChromeConfigurator(background: AppChrome.nsFill))
+        .containerBackground(AppChrome.fill, for: .window)
+        .frame(minWidth: 480, minHeight: 360)
         .onAppear { session.refreshToolStatus() }
-    }
-
-    private var toolbar: some View {
-        HStack(spacing: 10) {
-            Toggle("自动导出", isOn: $session.autoExport)
-                .toggleStyle(.switch)
-                .controlSize(.small)
-                .help("开启后拖入即压缩，结果写到原图旁：原名-tiny-yyyyMMdd-HHmmss.ext")
-
-            Spacer()
-
-            Button("打开…") { openPanel() }
-                .controlSize(.small)
-        }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 6)
-        .background(Color(nsColor: .controlBackgroundColor))
     }
 
     private func warningBanner(_ text: String) -> some View {
@@ -68,71 +54,49 @@ struct ContentView: View {
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundStyle(.orange)
             Text(text)
-                .font(.system(size: 12))
+                .font(.system(size: 13))
                 .foregroundStyle(.primary)
             Spacer(minLength: 0)
         }
-        .padding(10)
+        .padding(12)
         .background(
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(Color.orange.opacity(0.12))
         )
     }
 
     private var progressCard: some View {
-        VStack(spacing: 6) {
+        let done = !session.isCompressing && session.overallProgress >= 1
+        return VStack(spacing: 8) {
             HStack {
-                Text("正在压缩 \(session.completedCount) / \(session.totalCount)")
-                    .font(.system(size: 12, weight: .medium))
+                Text(done
+                      ? "已完成 \(session.completedCount) / \(session.totalCount)"
+                      : "正在压缩 \(session.completedCount) / \(session.totalCount)")
+                    .font(.system(size: 13, weight: .medium))
                 Spacer()
                 Text("\(Int(session.overallProgress * 100))%")
-                    .font(.system(size: 12).monospacedDigit())
+                    .font(.system(size: 13).monospacedDigit())
                     .foregroundStyle(.secondary)
             }
             ProgressView(value: session.overallProgress)
-                .controlSize(.small)
-                .tint(Color.accentColor)
+                .controlSize(.regular)
+                .tint(AppChrome.accent)
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
         .background(
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(Color.white)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .strokeBorder(Color.black.opacity(0.06), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .strokeBorder(AppChrome.cardBorder, lineWidth: 1)
                 )
         )
-        .opacity(session.isCompressing || session.overallProgress < 1 ? 1 : 0.85)
-    }
-
-    private var summaryHeader: some View {
-        HStack(alignment: .firstTextBaseline) {
-            VStack(alignment: .leading, spacing: 1) {
-                Text(session.autoExport ? "已节省 · 已自动导出" : "已节省")
-                    .font(.system(size: 11))
-                    .foregroundStyle(.secondary)
-                HStack(alignment: .firstTextBaseline, spacing: 6) {
-                    Text(ByteCountFormatter.string(fromByteCount: Int64(session.totalSavedBytes), countStyle: .file))
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundStyle(Color(red: 0.14, green: 0.54, blue: 0.24))
-                    if let avg = session.averageSavingsFraction {
-                        Text(String(format: "· %.0f%%", avg * 100))
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundStyle(Color(red: 0.14, green: 0.54, blue: 0.24))
-                    }
-                }
-            }
-            Spacer()
-            Text("\(session.items.count) 张")
-                .font(.system(size: 12).monospacedDigit())
-                .foregroundStyle(.secondary)
-        }
-        .padding(.horizontal, 2)
+        .opacity(done ? 0.9 : 1)
     }
 
     private var queue: some View {
-        LazyVStack(spacing: 5) {
+        LazyVStack(spacing: 6) {
             ForEach(session.items) { item in
                 CompressItemRow(item: item, autoExport: session.autoExport)
             }
@@ -140,24 +104,25 @@ struct ContentView: View {
     }
 
     private var actions: some View {
-        HStack {
+        HStack(spacing: 16) {
             Spacer()
-            if session.items.contains(where: { $0.outputURL != nil }) {
-                Button("在访达中显示") { session.revealInFinder() }
-                    .controlSize(.small)
-            }
             if !session.autoExport,
                session.items.contains(where: {
                    if case .done = $0.status { return $0.outputURL == nil && $0.compressedData != nil }
                    return false
                }) {
                 Button("全部导出") { session.exportSelectedManually() }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.small)
+                    .buttonStyle(.plain)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(AppChrome.accent)
             }
             Button("清除列表") { session.clearAll() }
-                .controlSize(.small)
+                .buttonStyle(.plain)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(.secondary)
         }
+        .padding(.top, 6)
+        .padding(.trailing, 2)
     }
 
     private func openPanel() {

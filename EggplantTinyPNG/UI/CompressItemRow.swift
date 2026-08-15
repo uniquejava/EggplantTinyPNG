@@ -10,19 +10,19 @@ struct CompressItemRow: View {
     }
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 10) {
             thumbnail
-                .frame(width: 34, height: 34)
-                .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
+                .frame(width: 40, height: 40)
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(item.displayName)
-                    .font(.system(size: 12.5, weight: .medium))
+                    .font(.system(size: 13.5, weight: .medium))
                     .lineLimit(1)
                 subtitle
             }
 
-            Spacer(minLength: 6)
+            Spacer(minLength: 8)
 
             statusBadge
 
@@ -30,7 +30,7 @@ struct CompressItemRow: View {
                 NSWorkspace.shared.activateFileViewerSelecting([revealURL])
             } label: {
                 Image(systemName: "arrow.forward.circle.fill")
-                    .font(.system(size: 15))
+                    .font(.system(size: 20))
                     .symbolRenderingMode(.hierarchical)
                     .foregroundStyle(.secondary)
             }
@@ -38,14 +38,14 @@ struct CompressItemRow: View {
             .help(item.outputURL == nil ? "在访达中显示原图" : "在访达中显示压缩结果")
             .accessibilityLabel("在访达中显示")
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 9)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 11)
         .background(
             RoundedRectangle(cornerRadius: 9, style: .continuous)
                 .fill(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 9, style: .continuous)
-                        .strokeBorder(Color.black.opacity(0.06), lineWidth: 1)
+                        .strokeBorder(AppChrome.cardBorder, lineWidth: 1)
                 )
         )
     }
@@ -91,23 +91,23 @@ struct CompressItemRow: View {
                 .font(.system(size: 10, weight: .semibold))
                 .padding(.horizontal, 7)
                 .padding(.vertical, 2)
-                .background(Capsule().fill(Color(nsColor: .controlBackgroundColor)))
+                .background(Capsule().fill(AppChrome.fill))
                 .foregroundStyle(.secondary)
         case .compressing:
             Text("压缩中")
                 .font(.system(size: 10, weight: .semibold))
                 .padding(.horizontal, 7)
                 .padding(.vertical, 2)
-                .background(Capsule().fill(Color.accentColor.opacity(0.12)))
-                .foregroundStyle(Color.accentColor)
+                .background(Capsule().fill(AppChrome.accent.opacity(0.14)))
+                .foregroundStyle(AppChrome.accent)
         case .done:
             if let s = item.savingsFraction {
                 Text(String(format: "−%.0f%%", s * 100))
                     .font(.system(size: 10, weight: .semibold))
                     .padding(.horizontal, 7)
                     .padding(.vertical, 2)
-                    .background(Capsule().fill(Color.green.opacity(0.12)))
-                    .foregroundStyle(Color(red: 0.14, green: 0.54, blue: 0.24))
+                    .background(Capsule().fill(AppChrome.savings.opacity(0.12)))
+                    .foregroundStyle(AppChrome.savings)
             }
         case .failed:
             Text("失败")

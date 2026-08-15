@@ -7,65 +7,71 @@ struct DropZoneView: View {
     let isTargeted: Bool
     let onTap: () -> Void
 
+    private static let idleFill = Color.white
+    private static let activeFill = Color(red: 232 / 255, green: 246 / 255, blue: 252 / 255)
+    private static let titleColor = Color(red: 0.12, green: 0.14, blue: 0.16)
+    private static let subtitleColor = Color(red: 0.35, green: 0.42, blue: 0.48)
+
     var body: some View {
         Button(action: onTap) {
             Group {
                 if isCompact {
-                    HStack(spacing: 10) {
+                    HStack(spacing: 12) {
                         icon
-                            .frame(width: 26, height: 26)
-                        VStack(alignment: .leading, spacing: 1) {
+                            .frame(width: 32, height: 32)
+                        VStack(alignment: .leading, spacing: 2) {
                             Text("继续添加图片")
-                                .font(.system(size: 12, weight: .semibold))
-                                .foregroundStyle(Color(nsColor: .labelColor))
-                            Text("拖放到此处或点「打开」")
-                                .font(.system(size: 10))
-                                .foregroundStyle(Color(nsColor: .secondaryLabelColor))
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundStyle(Self.titleColor)
+                            Text("拖放到此处，或点击选择")
+                                .font(.system(size: 11))
+                                .foregroundStyle(Self.subtitleColor)
                         }
                         Spacer(minLength: 0)
                     }
-                    .padding(.horizontal, 12)
-                    .frame(maxWidth: .infinity, minHeight: 52)
+                    .padding(.horizontal, 16)
+                    .frame(maxWidth: .infinity, minHeight: 80)
                 } else {
-                    VStack(spacing: 8) {
+                    VStack(spacing: 10) {
                         icon
-                            .frame(width: 44, height: 44)
+                            .frame(width: 64, height: 64)
                         Text("拖放图片到此处")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundStyle(Color(nsColor: .labelColor))
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(Self.titleColor)
                         Text("PNG · JPEG · WebP")
-                            .font(.system(size: 12))
-                            .foregroundStyle(Color(nsColor: .secondaryLabelColor))
+                            .font(.system(size: 13))
+                            .foregroundStyle(Self.subtitleColor)
                         Text("或点击选择文件")
-                            .font(.system(size: 11))
-                            .foregroundStyle(Color(nsColor: .tertiaryLabelColor))
+                            .font(.system(size: 12))
+                            .foregroundStyle(Self.subtitleColor.opacity(0.85))
                     }
-                    .frame(maxWidth: .infinity, minHeight: 168)
+                    .frame(maxWidth: .infinity, minHeight: 220)
                 }
             }
             .background(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(isTargeted ? Color.accentColor.opacity(0.08) : Color.white)
+                    .fill(isTargeted ? Self.activeFill : Self.idleFill)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .strokeBorder(
-                        isTargeted ? Color.accentColor : Color(nsColor: .separatorColor),
-                        style: StrokeStyle(lineWidth: 1.5, dash: [6, 4])
+                        AppChrome.accent.opacity(isTargeted ? 0.95 : 0.55),
+                        style: StrokeStyle(lineWidth: isTargeted ? 2 : 1.5, dash: [6, 4])
                     )
             )
         }
         .buttonStyle(.plain)
+        .animation(.easeOut(duration: 0.15), value: isTargeted)
     }
 
     private var icon: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: isCompact ? 8 : 12, style: .continuous)
-                .fill(isTargeted ? Color.accentColor.opacity(0.15) : Color(nsColor: .controlBackgroundColor))
-            Image(systemName: "arrow.down.to.line")
-                .font(.system(size: isCompact ? 14 : 20, weight: .semibold))
-                .foregroundStyle(isTargeted ? Color.accentColor : Color(nsColor: .secondaryLabelColor))
-        }
+        Image("DropGlyph")
+            .resizable()
+            .renderingMode(.template)
+            .interpolation(.high)
+            .aspectRatio(contentMode: .fit)
+            .foregroundStyle(AppChrome.accent)
+            .scaleEffect(isTargeted ? 1.04 : 1)
     }
 }
 
