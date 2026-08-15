@@ -45,6 +45,7 @@ struct CompressItemRow: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 11)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 9, style: .continuous)
                 .fill(themes.cardFill)

@@ -310,13 +310,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Drop to compress · saved as name-tiny-timestamp.ext"
+            "value": "Drop to compress · saved as name-tiny.ext"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "拖入即压缩 · 保存为 原名-tiny-时间戳.ext"
+            "value": "拖入即压缩 · 保存为 原名-tiny.ext"
           }
         }
       }

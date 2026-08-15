@@ -5,7 +5,7 @@
 Native **macOS 15+** TinyPNG-style local image compressor (SwiftUI window app).
 
 - Drag / open PNG · JPEG · WebP
-- Auto-export beside originals (`name-tiny-yyyyMMdd-HHmmss.ext`)
+- Auto-export beside originals (`name-tiny.ext`)
 - Light UI (style A); per-row Finder reveal
 - PNG via local **pngquant** (+ optional **oxipng**), same flags as obsidian-cos-images
 
@@ -35,7 +35,7 @@ Always use `-derivedDataPath build`. `build/` is gitignored.
 
 ## Product rules
 
-1. **Auto export on**: compress immediately → write beside source as `name-tiny-yyyyMMdd-HHmmss.ext` (always timestamped; same-second collision → `-1`, `-2`, …).
+1. **Auto export on**: compress immediately → write beside source as `name-tiny.ext` (collision → `-1`, `-2`, …).
 2. **Auto export off**: keep bytes in memory → user taps **全部导出** (same naming).
 3. Do **not** call TinyPNG / any online API.
 4. PNG quality mapping matches `obsidian-cos-images/compress_png.go` (`min = max-35`, retry floor 0 on exit 99).
@@ -67,7 +67,7 @@ Always use `-derivedDataPath build`. `build/` is gitignored.
 | Window chrome | Unified mist title+body; no in-window toolbar |
 | Scroller | Legacy always-on when overflowing; track `#e2f0f6` / knob `#82a8ba` |
 | Controls | Drop zone opens files; auto-export in **File menu** (⌘E); row reveal; quiet “清除列表” |
-| Naming | Always `name-tiny-yyyyMMdd-HHmmss.ext` |
+| Naming | Always `name-tiny.ext` (collision → `-1`, `-2`, …) |
 | Compress | Local `pngquant` (+ optional `oxipng`), mirror `obsidian-cos-images` |
 
 ### Design doc

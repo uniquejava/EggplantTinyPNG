@@ -334,6 +334,9 @@ private final class ScrollChromeHostView: NSView {
         }
         scrollView.scrollerKnobStyle = .default
         scrollView.horizontalScrollElasticity = .none
+        // Keep legacy scroller pinned to the scroll view’s trailing edge on resize.
+        scrollView.tile()
+        scrollView.verticalScroller?.needsDisplay = true
     }
 }
 
@@ -437,6 +440,9 @@ struct WindowChromeConfigurator: NSViewRepresentable {
             window.isOpaque = true
             window.backgroundColor = background
             window.toolbar = nil
+            // Match ContentView width cap so horizontal resize cannot leave a hollow strip.
+            window.minSize = NSSize(width: 480, height: 360)
+            window.maxSize = NSSize(width: 720, height: 10_000)
 
             for kind: NSWindow.ButtonType in [.closeButton, .miniaturizeButton, .zoomButton] {
                 window.standardWindowButton(kind)?.isHidden = false

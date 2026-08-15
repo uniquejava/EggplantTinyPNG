@@ -30,6 +30,7 @@ struct ContentView: View {
                         .font(.system(size: 12))
                         .foregroundStyle(themes.secondaryText)
                         .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
                 }
 
                 if !session.isEmpty {
@@ -39,6 +40,8 @@ struct ContentView: View {
                 }
             }
             .padding(16)
+            // Fill the ScrollView viewport so drop zone / cards / scroller track the window width.
+            .frame(maxWidth: .infinity, alignment: .top)
         }
         // Hide SwiftUI's fading overlay; AppKit legacy scroller stays on when overflowing.
         .scrollIndicators(.hidden)
@@ -47,10 +50,9 @@ struct ContentView: View {
         .background(WindowChromeConfigurator(background: themes.nsFill))
         .containerBackground(themes.fill, for: .window)
         .preferredColorScheme(themes.isDark ? .dark : .light)
-        // Ideal size matches Window.defaultSize; maxHeight keeps ScrollView scrolling
-        // instead of growing the window with the queue.
         .frame(minWidth: 480, idealWidth: 520, maxWidth: 720,
-               minHeight: 360, idealHeight: 460, maxHeight: 720)
+               minHeight: 360, idealHeight: 460)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear { session.refreshToolStatus() }
     }
 
@@ -64,6 +66,7 @@ struct ContentView: View {
             Spacer(minLength: 0)
         }
         .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(Color.orange.opacity(0.12))
@@ -96,6 +99,7 @@ struct ContentView: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 10)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(themes.cardFill)

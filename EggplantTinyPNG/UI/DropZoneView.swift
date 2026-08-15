@@ -60,6 +60,7 @@ struct DropZoneView: View {
             )
         }
         .buttonStyle(.plain)
+        .frame(maxWidth: .infinity)
         .animation(.easeOut(duration: 0.15), value: isTargeted)
     }
 
