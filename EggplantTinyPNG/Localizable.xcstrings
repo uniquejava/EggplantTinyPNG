@@ -337,6 +337,38 @@
         }
       }
     },
+    "hint.brew.lead": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PNG needs a one-time Homebrew install"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PNG 压缩需本机一次安装（Homebrew）"
+          }
+        }
+      }
+    },
+    "hint.brew.command": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "brew install pngquant oxipng"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "brew install pngquant oxipng"
+          }
+        }
+      }
+    },
     "progress.done": {
       "localizations": {
         "en": {

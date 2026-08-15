@@ -8,44 +8,53 @@ struct ContentView: View {
     @State private var isDropTargeted = false
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 12) {
-                if let msg = session.toolMissingMessage {
-                    warningBanner(msg)
-                }
+        GeometryReader { proxy in
+            ScrollView {
+                VStack(spacing: 12) {
+                    // Loud banner only once the queue has files; empty state uses a quiet footnote.
+                    if let msg = session.toolMissingMessage, !session.isEmpty {
+                        warningBanner(msg)
+                    }
 
-                DropZoneView(
-                    isCompact: !session.isEmpty,
-                    isTargeted: isDropTargeted,
-                    onTap: openPanel
-                )
-                .modifier(FileDropModifier(isTargeted: $isDropTargeted) { urls in
-                    session.addURLs(urls)
-                })
+                    DropZoneView(
+                        isCompact: !session.isEmpty,
+                        isTargeted: isDropTargeted,
+                        onTap: openPanel
+                    )
+                    .modifier(FileDropModifier(isTargeted: $isDropTargeted) { urls in
+                        session.addURLs(urls)
+                    })
 
-                if session.isEmpty {
-                    Text(session.autoExport
-                          ? String(localized: "hint.autoExport")
-                          : String(localized: "hint.manualExport"))
-                        .font(.system(size: 12))
-                        .foregroundStyle(themes.secondaryText)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity)
-                }
+                    if session.isEmpty {
+                        Text(session.autoExport
+                              ? String(localized: "hint.autoExport")
+                              : String(localized: "hint.manualExport"))
+                            .font(.system(size: 12))
+                            .foregroundStyle(themes.secondaryText)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity)
 
-                if !session.isEmpty {
-                    progressCard
-                    queue
-                    actions
+                        Spacer(minLength: 28)
+
+                        if session.toolMissingMessage != nil {
+                            brewFootnote
+                        }
+                    }
+
+                    if !session.isEmpty {
+                        progressCard
+                        queue
+                        actions
+                    }
                 }
+                .padding(16)
+                // Fill the viewport so the brew tip can sit in the empty lower area.
+                .frame(maxWidth: .infinity, minHeight: proxy.size.height, alignment: .top)
             }
-            .padding(16)
-            // Fill the ScrollView viewport so drop zone / cards / scroller track the window width.
-            .frame(maxWidth: .infinity, alignment: .top)
+            // Hide SwiftUI's fading overlay; AppKit legacy scroller stays on when overflowing.
+            .scrollIndicators(.hidden)
         }
-        // Hide SwiftUI's fading overlay; AppKit legacy scroller stays on when overflowing.
-        .scrollIndicators(.hidden)
-        .background(themes.fill)
+        .background(themes.fill.ignoresSafeArea())
         .background(ScrollChromeConfigurator())
         .background(WindowChromeConfigurator(background: themes.nsFill))
         .containerBackground(themes.fill, for: .window)
@@ -54,6 +63,21 @@ struct ContentView: View {
                minHeight: 360, idealHeight: 460)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear { session.refreshToolStatus() }
+    }
+
+    /// Quiet empty-state footnote — gray, no card; only when pngquant is missing.
+    private var brewFootnote: some View {
+        VStack(spacing: 5) {
+            Text(String(localized: "hint.brew.lead"))
+                .font(.system(size: 11))
+            Text(String(localized: "hint.brew.command"))
+                .font(.system(size: 11, design: .monospaced))
+        }
+        .foregroundStyle(themes.secondaryText.opacity(0.55))
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity)
+        .padding(.bottom, 4)
+        .accessibilityElement(children: .combine)
     }
 
     private func warningBanner(_ text: String) -> some View {

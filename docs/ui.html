@@ -241,6 +241,50 @@
     cursor: default;
   }
 
+  /* Empty first screen: drop + soft brew footnote in lower space */
+  .body.empty {
+    min-height: 100%;
+  }
+  .body.empty .drop {
+    min-height: 220px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    padding: 24px 16px;
+    text-align: center;
+  }
+  .body.empty .glyph {
+    width: 64px;
+    height: 64px;
+  }
+  .body.empty .drop h3 { font-size: 16px; }
+  .body.empty .drop p { font-size: 13px; }
+  .body.empty .drop .click {
+    font-size: 12px;
+    color: var(--sub);
+    opacity: 0.85;
+  }
+  .hint-op {
+    text-align: center;
+    font-size: 12px;
+    color: var(--sub);
+  }
+  .brew-tip {
+    margin-top: auto;
+    padding-top: 28px;
+    text-align: center;
+    color: var(--sub);
+    opacity: 0.55;
+  }
+  .brew-tip .lead {
+    margin: 0 0 5px;
+    font-size: 11px;
+  }
+  .brew-tip .cmd {
+    margin: 0;
+    font: 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
   .panel {
     width: min(360px, 92vw);
     padding: 16px 16px 14px;
@@ -402,6 +446,31 @@
 </style>
 </head>
 <body>
+  <div class="win" aria-label="EggplantTinyPNG empty state">
+    <div class="tb">
+      <div class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+      <div class="title">EggplantTinyPNG</div>
+    </div>
+    <div class="scroll">
+      <div class="body empty">
+        <div class="drop">
+          <div class="glyph" aria-hidden="true"></div>
+          <div>
+            <h3>拖放图片到这里</h3>
+            <p>PNG · JPEG · WebP</p>
+            <p class="click">或点击选择文件</p>
+          </div>
+        </div>
+        <p class="hint-op">拖入即压缩 · 保存为 原名-tiny.ext</p>
+        <div class="brew-tip">
+          <p class="lead">PNG 压缩需本机一次安装（Homebrew）</p>
+          <p class="cmd">brew install pngquant oxipng</p>
+        </div>
+      </div>
+      <div class="scroller" aria-hidden="true"></div>
+    </div>
+  </div>
+
   <div class="win" aria-label="EggplantTinyPNG theme preview">
     <div class="tb">
       <div class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></div>

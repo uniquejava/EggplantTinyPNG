@@ -423,16 +423,23 @@ struct WindowChromeConfigurator: NSViewRepresentable {
 
         private func paintSoon() {
             paint()
-            DispatchQueue.main.async { [weak self] in self?.paint() }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in self?.paint() }
+            // Extra passes: Intel / slower machines often rebuild titlebar materials after first paint.
+            for delay in [0.05, 0.15, 0.4, 1.0] as [TimeInterval] {
+                DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+                    self?.paint()
+                }
+            }
         }
 
         func paint() {
             guard let window = observedWindow ?? hostView?.window else { return }
             if observedWindow == nil { bind(window: window) }
 
-            window.styleMask.formUnion([.titled, .closable, .miniaturizable, .resizable])
-            window.styleMask.remove(.fullSizeContentView)
+            // fullSizeContentView: theme fill draws under the title strip so we are not
+            // solely dependent on poking private NSTitlebar views (fragile across Macs).
+            window.styleMask.formUnion([
+                .titled, .closable, .miniaturizable, .resizable, .fullSizeContentView,
+            ])
             window.title = "EggplantTinyPNG"
             window.titleVisibility = .visible
             window.titlebarAppearsTransparent = true
@@ -453,39 +460,62 @@ struct WindowChromeConfigurator: NSViewRepresentable {
         }
 
         private func paintTitlebar(_ window: NSWindow) {
-            guard let button = window.standardWindowButton(.closeButton),
-                  let buttonBar = button.superview,
-                  let titlebar = buttonBar.superview
-            else { return }
-
             let cg = background.cgColor
-            for view in [titlebar, buttonBar] {
-                view.wantsLayer = true
-                view.layer?.backgroundColor = cg
-            }
+
             if let content = window.contentView {
                 content.wantsLayer = true
                 content.layer?.backgroundColor = cg
+                if let frame = content.superview {
+                    frame.wantsLayer = true
+                    frame.layer?.backgroundColor = cg
+                    neutralizeChromeMaterials(in: frame, color: cg)
+                }
             }
 
+            if let button = window.standardWindowButton(.closeButton),
+               let buttonBar = button.superview {
+                buttonBar.wantsLayer = true
+                buttonBar.layer?.backgroundColor = cg
+                if let titlebar = buttonBar.superview {
+                    titlebar.wantsLayer = true
+                    titlebar.layer?.backgroundColor = cg
+                    neutralizeChromeMaterials(in: titlebar, color: cg)
+                }
+            }
+
+            // Fallback when traffic-light hierarchy differs (seen on some macOS / Intel builds).
+            if let cls = NSClassFromString("NSTitlebarContainerView"),
+               let frame = window.contentView?.superview {
+                for sub in frame.subviews where sub.isKind(of: cls) {
+                    sub.wantsLayer = true
+                    sub.layer?.backgroundColor = cg
+                    neutralizeChromeMaterials(in: sub, color: cg)
+                }
+            }
+
+            window.titlebarSeparatorStyle = .none
+        }
+
+        private func neutralizeChromeMaterials(in root: NSView, color: CGColor) {
             let separatorClass = NSClassFromString("NSTitlebarSeparatorView")
-            var stack = titlebar.subviews
+            var stack = root.subviews
             while let sub = stack.popLast() {
                 stack.append(contentsOf: sub.subviews)
                 if let effect = sub as? NSVisualEffectView {
+                    // Kill the system gray/vibrant material that otherwise wins over our fill.
+                    effect.isHidden = true
                     effect.alphaValue = 0
                     effect.wantsLayer = true
-                    effect.layer?.backgroundColor = cg
+                    effect.layer?.backgroundColor = color
                 }
                 let isSep = separatorClass.map { sub.isKind(of: $0) } ?? false
                 let isHair = sub.bounds.height > 0 && sub.bounds.height <= 1.5
-                    && sub.bounds.width >= titlebar.bounds.width - 8
+                    && sub.bounds.width >= root.bounds.width - 8
                 if isSep || isHair {
                     sub.isHidden = true
                     sub.alphaValue = 0
                 }
             }
-            window.titlebarSeparatorStyle = .none
         }
     }
 }
