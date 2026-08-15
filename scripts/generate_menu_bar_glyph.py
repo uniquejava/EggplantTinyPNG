@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rasterize Lucide `image` SVG into MenuBarGlyph.imageset (18 / 36 template PNGs)."""
+"""Rasterize stacked-photo SVG into MenuBarGlyph.imageset (18 / 36 template PNGs)."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "EggplantTinyPNG/Assets.xcassets/MenuBarGlyph.imageset"
-SVG = ROOT / "scripts/icons/lucide-image.svg"
+SVG = ROOT / "scripts/icons/menu-bar-stacked.svg"
 RSVG_CANDIDATES = (
     Path("/opt/homebrew/bin/rsvg-convert"),
     Path("/usr/local/bin/rsvg-convert"),
@@ -57,8 +57,8 @@ def main() -> None:
     if RSVG is None:
         sys.exit("rsvg-convert not found")
     OUT.mkdir(parents=True, exist_ok=True)
-    rasterize(16, OUT / "MenuBarGlyph.png")
-    rasterize(32, OUT / "MenuBarGlyph@2x.png")
+    rasterize(18, OUT / "MenuBarGlyph.png")
+    rasterize(36, OUT / "MenuBarGlyph@2x.png")
     (OUT / "Contents.json").write_text(CONTENTS)
     print("ok", OUT, "via", RSVG)
 

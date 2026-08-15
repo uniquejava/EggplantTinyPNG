@@ -22,7 +22,6 @@
 		A1000000000000000000000F /* AppChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000F /* AppChrome.swift */; };
 		A10000000000000000000010 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000010 /* Localizable.xcstrings */; };
 		A10000000000000000000011 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000011 /* AppLanguage.swift */; };
-		A10000000000000000000012 /* StatusMenuContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000012 /* StatusMenuContent.swift */; };
 		A10000000000000000000013 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000013 /* SettingsView.swift */; };
 		A10000000000000000000014 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000014 /* AboutView.swift */; };
 /* End PBXBuildFile section */
@@ -46,7 +45,6 @@
 		B1000000000000000000000E /* EggplantTinyPNG.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EggplantTinyPNG.entitlements; sourceTree = "<group>"; };
 		B10000000000000000000010 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		B10000000000000000000011 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
-		B10000000000000000000012 /* StatusMenuContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMenuContent.swift; sourceTree = "<group>"; };
 		B10000000000000000000013 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B10000000000000000000014 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -130,7 +128,6 @@
 				B10000000000000000000009 /* ContentView.swift */,
 				B1000000000000000000000A /* DropZoneView.swift */,
 				B1000000000000000000000B /* CompressItemRow.swift */,
-				B10000000000000000000012 /* StatusMenuContent.swift */,
 				B10000000000000000000013 /* SettingsView.swift */,
 				B10000000000000000000014 /* AboutView.swift */,
 			);
@@ -229,7 +226,6 @@
 				A1000000000000000000000A /* DropZoneView.swift in Sources */,
 				A1000000000000000000000B /* CompressItemRow.swift in Sources */,
 				A10000000000000000000011 /* AppLanguage.swift in Sources */,
-				A10000000000000000000012 /* StatusMenuContent.swift in Sources */,
 				A10000000000000000000013 /* SettingsView.swift in Sources */,
 				A10000000000000000000014 /* AboutView.swift in Sources */,
 			);

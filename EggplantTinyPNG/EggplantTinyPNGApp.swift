@@ -11,26 +11,15 @@ struct EggplantTinyPNGApp: App {
     @StateObject private var session = CompressSession()
 
     var body: some Scene {
-        MenuBarExtra {
-            StatusMenuContent(session: session)
-                .background(PreferencesEnvironmentBridge())
-                .background(WindowOpenerBridge())
-        } label: {
-            // Lucide `image` template; ~16pt so it matches neighboring status items.
-            Image("MenuBarGlyph")
-                .renderingMode(.template)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 14, height: 14)
-        }
-
-        // Singular Window (not WindowGroup) so Show Window reuses one instance.
         Window("EggplantTinyPNG", id: "main") {
             ContentView(session: session)
                 .environmentObject(ThemeStore.shared)
+                .background(PreferencesEnvironmentBridge())
+                .background(WindowOpenerBridge())
         }
         .windowStyle(.automatic)
-        .windowResizability(.contentSize)
+        // Not .contentSize — queue growth would stretch the window endlessly.
+        .windowResizability(.automatic)
         .defaultSize(width: 520, height: 460)
         .commands {
             CommandGroup(replacing: .newItem) {}
@@ -63,19 +52,11 @@ private struct WindowOpenerBridge: View {
             .accessibilityHidden(true)
             .onAppear {
                 MainWindowGateway.shared.open = { [openWindow] in
-                    NSApp.setActivationPolicy(.regular)
                     NSApp.activate(ignoringOtherApps: true)
                     if MainWindowGateway.frontExistingMainWindow() {
                         return
                     }
                     openWindow(id: "main")
-                }
-                // Open compressor once at launch (not every status-menu open).
-                if !MainWindowGateway.shared.didOpenAtLaunch {
-                    MainWindowGateway.shared.didOpenAtLaunch = true
-                    DispatchQueue.main.async {
-                        MainWindowGateway.shared.open?()
-                    }
                 }
             }
     }
@@ -86,7 +67,6 @@ enum MainWindowGateway {
     static let shared = Gateway()
     final class Gateway {
         var open: (() -> Void)?
-        var didOpenAtLaunch = false
     }
 
     /// Bring an already-created main window forward (incl. miniaturized / hidden).
@@ -108,7 +88,6 @@ enum MainWindowGateway {
         if window is NSPanel { return false }
         if window.frame.width < 80 || window.frame.height < 80 { return false }
         if window.identifier?.rawValue == "main" { return true }
-        // Title is set by WindowChromeConfigurator once attached.
         return window.title == "EggplantTinyPNG"
     }
 }
@@ -127,7 +106,6 @@ private struct PreferencesEnvironmentBridge: View {
             }
             .onReceive(NotificationCenter.default.publisher(for: .openAppPreferences)) { _ in
                 OpenSettingsGateway.shared.open?()
-                NSApp.setActivationPolicy(.regular)
                 NSApp.activate(ignoringOtherApps: true)
             }
     }
@@ -144,21 +122,21 @@ enum OpenSettingsGateway {
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.setActivationPolicy(.accessory)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if flag { return true }
         if let open = MainWindowGateway.shared.open {
             open()
         } else {
-            NSApp.setActivationPolicy(.regular)
             NSApp.activate(ignoringOtherApps: true)
         }
         return true
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        NSApp.setActivationPolicy(.accessory)
-        return false
+        // Keep the Dock icon; quit only via ⌘Q / Quit menu (standard macOS apps).
+        false
     }
 }

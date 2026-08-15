@@ -59,7 +59,7 @@ enum AppAboutInfo {
     static let githubDisplay = "github.com/uniquejava/EggplantTinyPNG"
     static let techStack = """
     SwiftUI + AppKit · local pngquant / Image I/O
-    MenuBarExtra · theme chrome · macOS 15+
+    theme chrome · macOS 15+
     """
 
     static var appName: String {

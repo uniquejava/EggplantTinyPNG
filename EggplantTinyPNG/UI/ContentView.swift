@@ -47,7 +47,10 @@ struct ContentView: View {
         .background(WindowChromeConfigurator(background: themes.nsFill))
         .containerBackground(themes.fill, for: .window)
         .preferredColorScheme(themes.isDark ? .dark : .light)
-        .frame(minWidth: 480, minHeight: 360)
+        // Ideal size matches Window.defaultSize; maxHeight keeps ScrollView scrolling
+        // instead of growing the window with the queue.
+        .frame(minWidth: 480, idealWidth: 520, maxWidth: 720,
+               minHeight: 360, idealHeight: 460, maxHeight: 720)
         .onAppear { session.refreshToolStatus() }
     }
 

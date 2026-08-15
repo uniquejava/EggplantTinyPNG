@@ -1,4 +1,3 @@
-import AppKit
 import SwiftUI
 
 struct SettingsView: View {
@@ -17,10 +16,6 @@ struct SettingsView: View {
                 }
         }
         .frame(width: 440, height: 400)
-        .onAppear {
-            NSApp.setActivationPolicy(.regular)
-            NSApp.activate(ignoringOtherApps: true)
-        }
     }
 }
 
