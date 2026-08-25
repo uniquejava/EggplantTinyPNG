@@ -321,22 +321,6 @@
         }
       }
     },
-    "hint.manualExport": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drop then export manually · toggle auto-export in the menu bar"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "拖入后手动导出 · 菜单栏可开自动导出"
-          }
-        }
-      }
-    },
     "hint.brew.lead": {
       "localizations": {
         "en": {
@@ -401,22 +385,6 @@
         }
       }
     },
-    "action.exportAll": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Export All"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "全部导出"
-          }
-        }
-      }
-    },
     "action.clearList": {
       "localizations": {
         "en": {
@@ -429,22 +397,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "清除列表"
-          }
-        }
-      }
-    },
-    "menu.autoExport": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auto Export"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "自动导出"
           }
         }
       }
@@ -573,6 +525,54 @@
           "stringUnit": {
             "state": "translated",
             "value": "在访达中显示"
+          }
+        }
+      }
+    },
+    "overwrite.help": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overwrite Original"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "覆盖原图"
+          }
+        }
+      }
+    },
+    "overwrite.accessibility": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overwrite Original"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "覆盖原图"
+          }
+        }
+      }
+    },
+    "status.overwrote": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overwrote original · %@→%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已覆盖原图 · %@→%@"
           }
         }
       }

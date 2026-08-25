@@ -35,11 +35,10 @@ Always use `-derivedDataPath build`. `build/` is gitignored.
 
 ## Product rules
 
-1. **Auto export on**: compress immediately → write beside source as `name-tiny.ext` (collision → `-1`, `-2`, …).
-2. **Auto export off**: keep bytes in memory → user taps **全部导出** (same naming).
-3. Do **not** call TinyPNG / any online API.
-4. PNG quality mapping matches `obsidian-cos-images/compress_png.go` (`min = max-35`, retry floor 0 on exit 99).
-5. App Sandbox **OFF** so writes next to user-selected files work.
+1. Compress immediately → write beside source as `name-tiny.ext` (collision → `-1`, `-2`, …).
+2. Do **not** call TinyPNG / any online API.
+3. PNG quality mapping matches `obsidian-cos-images/compress_png.go` (`min = max-35`, retry floor 0 on exit 99).
+4. App Sandbox **OFF** so writes next to user-selected files work.
 
 ## Prefer
 
@@ -66,7 +65,7 @@ Always use `-derivedDataPath build`. `build/` is gitignored.
 | Drop zone | White fill + cyan dashed border + dark copy; glyph template-tinted cyan |
 | Window chrome | Unified mist title+body; no in-window toolbar |
 | Scroller | Legacy always-on when overflowing; track `#e2f0f6` / knob `#82a8ba` |
-| Controls | Drop zone opens files; auto-export in **File menu** (⌘E); row reveal; quiet “清除列表” |
+| Controls | Drop zone opens files; row reveal + overwrite original; quiet “清除列表” |
 | Naming | Always `name-tiny.ext` (collision → `-1`, `-2`, …) |
 | Compress | Local `pngquant` (+ optional `oxipng`), mirror `obsidian-cos-images` |
 

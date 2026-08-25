@@ -5,10 +5,22 @@ struct CompressItemRow: View {
     @EnvironmentObject private var themes: ThemeStore
 
     let item: CompressItem
-    let autoExport: Bool
+    var onOverwrite: (() -> Void)?
 
     private var revealURL: URL {
         item.outputURL ?? item.sourceURL
+    }
+
+    private var canOverwrite: Bool {
+        guard case .done = item.status,
+              let out = item.outputURL,
+              out != item.sourceURL
+        else { return false }
+        return true
+    }
+
+    private var didOverwrite: Bool {
+        item.outputURL == item.sourceURL
     }
 
     var body: some View {
@@ -29,6 +41,16 @@ struct CompressItemRow: View {
 
             statusBadge
 
+            if canOverwrite {
+                Button(String(localized: "overwrite.accessibility")) {
+                    onOverwrite?()
+                }
+                .buttonStyle(.plain)
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(themes.secondaryText)
+                .help(String(localized: "overwrite.help"))
+            }
+
             Button {
                 NSWorkspace.shared.activateFileViewerSelecting([revealURL])
             } label: {
@@ -40,7 +62,9 @@ struct CompressItemRow: View {
             .buttonStyle(.plain)
             .help(item.outputURL == nil
                   ? String(localized: "reveal.original")
-                  : String(localized: "reveal.result"))
+                  : (didOverwrite
+                     ? String(localized: "reveal.original")
+                     : String(localized: "reveal.result")))
             .accessibilityLabel(String(localized: "reveal.accessibility"))
         }
         .padding(.horizontal, 12)
@@ -60,11 +84,9 @@ struct CompressItemRow: View {
     private var subtitle: some View {
         switch item.status {
         case .queued:
-            Text(autoExport
-                  ? String(format: String(localized: "status.willWrite"),
-                           locale: .current,
-                           OutputPathResolver.predictedFileName(for: item.sourceURL))
-                  : String(localized: "status.queued"))
+            Text(String(format: String(localized: "status.willWrite"),
+                       locale: .current,
+                       OutputPathResolver.predictedFileName(for: item.sourceURL)))
                 .font(.system(size: 11))
                 .foregroundStyle(.secondary)
         case .compressing:
@@ -87,6 +109,11 @@ struct CompressItemRow: View {
         let from = ByteCountFormatter.string(fromByteCount: Int64(item.originalBytes), countStyle: .file)
         let toBytes = item.compressedBytes ?? item.originalBytes
         let to = ByteCountFormatter.string(fromByteCount: Int64(toBytes), countStyle: .file)
+        if didOverwrite {
+            return String(format: String(localized: "status.overwrote"),
+                          locale: .current,
+                          from, to)
+        }
         if let name = item.outputURL?.lastPathComponent {
             return "→ \(name) · \(from)→\(to)"
         }

@@ -12,9 +12,8 @@ Download from **[Releases](https://github.com/uniquejava/EggplantTinyPNG/release
 
 - **Drop or open** PNG, JPEG, or WebP
 - **Compress locally** — nothing is uploaded
-- **Auto-save** next to the original as `name-tiny.ext` (on by default; toggle with ⌘E)
-- Or compress first, then tap **Export All** when you’re ready
-- See progress for the whole batch; jump to a file in Finder when it’s done
+- **Auto-save** next to the original as `name-tiny.ext`
+- See progress for the whole batch; jump to a file in Finder when it’s done, or **Overwrite Original**
 - Themes and language (System / English / 简体中文) in Settings
 
 Closing the window keeps the app in the Dock. Quit with ⌘Q.
@@ -32,5 +31,5 @@ See [docs/commands.md](./docs/commands.md). Requires macOS 15+ and Xcode 16+.
 
 ## More
 
-- [v0.1.0 release notes](./docs/releases/v0.1.0.md) (English / 中文)
+- [v0.2.0 release notes](./docs/releases/v0.2.0.md) (English / 中文)
 - [AGENTS.md](./AGENTS.md) — notes for contributors

@@ -26,7 +26,7 @@ open build/Build/Products/Release/EggplantTinyPNG.app
 ```bash
 ARCHIVE=build/EggplantTinyPNG.xcarchive
 STAGE=build/dmg-stage
-DMG=build/EggplantTinyPNG-v0.1.0.dmg
+DMG=build/EggplantTinyPNG-v0.2.0.dmg
 
 xcodebuild archive \
   -project EggplantTinyPNG.xcodeproj -scheme EggplantTinyPNG \
@@ -51,21 +51,21 @@ After install from an ad-hoc DMG: `xattr -cr /Applications/EggplantTinyPNG.app`.
 | `ci.yml` | Push / PR to `main` | Release build (ad-hoc signed) |
 | `release.yml` | Tag `v*` (or manual dispatch) | Archive → DMG → GitHub Release |
 
-`MARKETING_VERSION` is already `0.1.0` in the Xcode project. For a release:
+Bump `MARKETING_VERSION` / `CURRENT_PROJECT_VERSION` in the Xcode project. For a release:
 
 1. Add bilingual notes at `docs/releases/vX.Y.Z.md` (optional but preferred)
 2. Commit and push `main`
 3. Tag and push:
 
 ```bash
-git tag v0.1.0
+git tag v0.2.0
 git push origin main
-git push origin v0.1.0
+git push origin v0.2.0
 ```
 
-Actions builds `EggplantTinyPNG-v0.1.0.dmg` and attaches it to [Releases](https://github.com/uniquejava/EggplantTinyPNG/releases).
+Actions builds `EggplantTinyPNG-v0.2.0.dmg` and attaches it to [Releases](https://github.com/uniquejava/EggplantTinyPNG/releases).
 
-Re-run without a new tag: Actions → **Release** → **Run workflow** → enter tag (e.g. `v0.1.0`).
+Re-run without a new tag: Actions → **Release** → **Run workflow** → enter tag (e.g. `v0.2.0`).
 
 ## Clean
 

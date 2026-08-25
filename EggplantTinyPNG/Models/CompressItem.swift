@@ -15,7 +15,6 @@ struct CompressItem: Identifiable, Equatable {
     var progress: Double
     var compressedBytes: Int?
     var outputURL: URL?
-    var compressedData: Data?
 
     var displayName: String { sourceURL.lastPathComponent }
 

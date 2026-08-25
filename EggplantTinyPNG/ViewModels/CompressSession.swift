@@ -11,7 +11,6 @@ final class CompressSession: ObservableObject {
     @Published var totalCount = 0
     @Published var toolMissingMessage: String?
 
-    @AppStorage("autoExport") var autoExport = true
     @AppStorage("quality") var quality = 80
 
     private var compressTask: Task<Void, Never>?
@@ -94,21 +93,23 @@ final class CompressSession: ObservableObject {
         NSWorkspace.shared.activateFileViewerSelecting(urls)
     }
 
-    func exportSelectedManually() {
-        // When auto-export is off, write buffered results next to originals.
-        for index in items.indices {
-            guard case .done = items[index].status,
-                  items[index].outputURL == nil,
-                  let data = items[index].compressedData
-            else { continue }
-            let dest = OutputPathResolver.autoExportURL(for: items[index].sourceURL)
-            do {
-                try data.write(to: dest, options: .atomic)
-                items[index].outputURL = dest
-                items[index].compressedData = nil
-            } catch {
-                items[index].status = .failed(error.localizedDescription)
-            }
+    /// Replace the source file with compressed bytes; remove any `-tiny` sidecar.
+    func overwriteOriginal(id: UUID) {
+        guard let index = items.firstIndex(where: { $0.id == id }),
+              case .done = items[index].status,
+              let out = items[index].outputURL
+        else { return }
+
+        let source = items[index].sourceURL
+        if out == source { return }
+
+        do {
+            let data = try Data(contentsOf: out)
+            try data.write(to: source, options: .atomic)
+            try? FileManager.default.removeItem(at: out)
+            items[index].outputURL = source
+        } catch {
+            items[index].status = .failed(error.localizedDescription)
         }
     }
 
@@ -143,7 +144,6 @@ final class CompressSession: ObservableObject {
 
         let source = items[index].sourceURL
         let quality = self.quality
-        let auto = autoExport
 
         do {
             let result = try await Task.detached(priority: .userInitiated) {
@@ -155,13 +155,9 @@ final class CompressSession: ObservableObject {
             items[index].progress = 0.9
             items[index].compressedBytes = result.bytes
 
-            if auto {
-                let dest = OutputPathResolver.autoExportURL(for: source)
-                try result.data.write(to: dest, options: .atomic)
-                items[index].outputURL = dest
-            } else {
-                items[index].compressedData = result.data
-            }
+            let dest = OutputPathResolver.autoExportURL(for: source)
+            try result.data.write(to: dest, options: .atomic)
+            items[index].outputURL = dest
 
             items[index].progress = 1
             items[index].status = .done

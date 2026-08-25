@@ -23,10 +23,6 @@ struct EggplantTinyPNGApp: App {
         .defaultSize(width: 520, height: 460)
         .commands {
             CommandGroup(replacing: .newItem) {}
-            CommandGroup(after: .newItem) {
-                Toggle(L10n.tr("menu.autoExport"), isOn: $session.autoExport)
-                    .keyboardShortcut("e", modifiers: [.command])
-            }
             CommandGroup(replacing: .saveItem) {
                 Button(L10n.tr("action.clearList")) {
                     session.clearAll()

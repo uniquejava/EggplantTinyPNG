@@ -26,9 +26,7 @@ struct ContentView: View {
                     })
 
                     if session.isEmpty {
-                        Text(session.autoExport
-                              ? String(localized: "hint.autoExport")
-                              : String(localized: "hint.manualExport"))
+                        Text(String(localized: "hint.autoExport"))
                             .font(.system(size: 12))
                             .foregroundStyle(themes.secondaryText)
                             .multilineTextAlignment(.center)
@@ -138,7 +136,9 @@ struct ContentView: View {
     private var queue: some View {
         LazyVStack(spacing: 6) {
             ForEach(session.items) { item in
-                CompressItemRow(item: item, autoExport: session.autoExport)
+                CompressItemRow(item: item) {
+                    session.overwriteOriginal(id: item.id)
+                }
             }
         }
     }
@@ -146,16 +146,6 @@ struct ContentView: View {
     private var actions: some View {
         HStack(spacing: 16) {
             Spacer()
-            if !session.autoExport,
-               session.items.contains(where: {
-                   if case .done = $0.status { return $0.outputURL == nil && $0.compressedData != nil }
-                   return false
-               }) {
-                Button(String(localized: "action.exportAll")) { session.exportSelectedManually() }
-                    .buttonStyle(.plain)
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(themes.accent)
-            }
             Button(String(localized: "action.clearList")) { session.clearAll() }
                 .buttonStyle(.plain)
                 .font(.system(size: 13, weight: .medium))
