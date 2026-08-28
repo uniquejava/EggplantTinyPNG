@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Rasterize master AppIcon into macOS AppIcon.appiconset sizes."""
+"""Rasterize master AppIcon into macOS AppIcon.appiconset sizes.
+
+macOS wants a rounded-rect (“squircle”) silhouette with transparent corners and —
+unlike iOS, where the OS masks and insets for you — a transparent **optical margin**
+baked into the art. Filling the artboard edge-to-edge makes the Dock tile render
+~1.24x its system peers. Apple’s template ≈ 100px pad / 824px grid on 1024.
+"""
 
 from __future__ import annotations
 
@@ -17,6 +23,8 @@ CANDIDATES = [
 ]
 
 CORNER_RADIUS_FRAC = 0.2237
+# Outer canvas → icon-grid inset (Notes/Safari solid body ≈ 824 on 1024).
+ICON_GRID_PX = 824
 
 SIZES: list[tuple[str, int, str, str]] = [
     ("icon_16.png", 16, "16x16", "1x"),
@@ -32,19 +40,43 @@ SIZES: list[tuple[str, int, str, str]] = [
 ]
 
 
-def apply_macos_icon_mask(im: Image.Image) -> Image.Image:
+def _center_top_pad_frac(im: Image.Image) -> float:
+    w, h = im.size
+    cx = w // 2
+    for y in range(h):
+        if im.getpixel((cx, y))[3] > 16:
+            return y / h
+    return 1.0
+
+
+def bake_macos_app_icon(im: Image.Image) -> Image.Image:
+    """Inset to Apple's icon grid, then clip to squircle (transparent outside)."""
     im = im.convert("RGBA")
     w, h = im.size
     if w != h:
         raise SystemExit(f"expected square image, got {w}x{h}")
-    if im.getpixel((0, 0))[3] < 16 and im.getpixel((w - 1, 0))[3] < 16:
+    if im.size != (1024, 1024):
+        im = im.resize((1024, 1024), Image.Resampling.LANCZOS)
+
+    # Already on-grid (e.g. re-run on a previous master): keep as-is.
+    pad_frac = _center_top_pad_frac(im)
+    if 0.08 <= pad_frac <= 0.12 and im.getpixel((0, 0))[3] < 16:
         return im
-    radius = max(1, int(round(min(w, h) * CORNER_RADIUS_FRAC)))
-    mask = Image.new("L", (w, h), 0)
+
+    grid = ICON_GRID_PX
+    pad = (1024 - grid) // 2
+    inner = im.resize((grid, grid), Image.Resampling.LANCZOS)
+    canvas = Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))
+    canvas.paste(inner, (pad, pad), inner)
+
+    radius = max(1, int(round(grid * CORNER_RADIUS_FRAC)))
+    mask = Image.new("L", (1024, 1024), 0)
     draw = ImageDraw.Draw(mask)
-    draw.rounded_rectangle((0, 0, w - 1, h - 1), radius=radius, fill=255)
-    out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-    out.paste(im, (0, 0), mask=mask)
+    draw.rounded_rectangle(
+        (pad, pad, pad + grid - 1, pad + grid - 1), radius=radius, fill=255
+    )
+    out = Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))
+    out.paste(canvas, (0, 0), mask=mask)
     return out
 
 
@@ -60,7 +92,7 @@ def main() -> None:
     im = Image.open(src)
     if im.size != (1024, 1024):
         im = im.resize((1024, 1024), Image.Resampling.LANCZOS)
-    im = apply_macos_icon_mask(im)
+    im = bake_macos_app_icon(im)
 
     master = DEST / "AppIcon-1024-master.png"
     im.save(master, format="PNG")
